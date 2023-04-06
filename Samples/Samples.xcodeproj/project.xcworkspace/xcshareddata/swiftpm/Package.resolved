@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "test-devrev-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:devrev/test-devrev-sdk-ios.git",
+      "state" : {
+        "revision" : "59c7035142ad0ece727be39caf86aec4ffbed93c",
+        "version" : "1.0.37"
+      }
+    }
+  ],
+  "version" : 2
+}

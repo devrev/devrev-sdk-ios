@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2158570B29DEEE0500635927 /* DevRevSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2158570A29DEEE0500635927 /* DevRevSDK */; };
+		2158570E29DEEE1000635927 /* DevRevSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2158570D29DEEE1000635927 /* DevRevSDK */; };
 		34229CE32975577F0050639F /* SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34229CE22975577F0050639F /* SampleApp.swift */; };
 		34229CE52975577F0050639F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34229CE42975577F0050639F /* ContentView.swift */; };
 		34229CE7297557800050639F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34229CE6297557800050639F /* Assets.xcassets */; };
 		34229CEA297557800050639F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34229CE9297557800050639F /* Preview Assets.xcassets */; };
-		3456F278299655C700B01786 /* DevRevSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 34628659299652EE000A129B /* DevRevSDK */; };
-		3462865A299652EE000A129B /* DevRevSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 34628659299652EE000A129B /* DevRevSDK */; };
 		34E22DA5298967FD006B21A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E22DA4298967FD006B21A1 /* AppDelegate.swift */; };
 		34E22DA7298967FD006B21A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E22DA6298967FD006B21A1 /* SceneDelegate.swift */; };
 		34E22DA9298967FD006B21A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E22DA8298967FD006B21A1 /* ViewController.swift */; };
@@ -65,7 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3462865A299652EE000A129B /* DevRevSDK in Frameworks */,
+				2158570B29DEEE0500635927 /* DevRevSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,19 +73,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3456F278299655C700B01786 /* DevRevSDK in Frameworks */,
+				2158570E29DEEE1000635927 /* DevRevSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2158570C29DEEE1000635927 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		34229CD42975574B0050639F = {
 			isa = PBXGroup;
 			children = (
 				34229CE12975577F0050639F /* SampleSwiftUI */,
 				34E22DA3298967FD006B21A1 /* SampleUIKit */,
 				34229CE02975577F0050639F /* Products */,
+				2158570C29DEEE1000635927 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -150,7 +158,7 @@
 			);
 			name = SampleSwiftUI;
 			packageProductDependencies = (
-				34628659299652EE000A129B /* DevRevSDK */,
+				2158570A29DEEE0500635927 /* DevRevSDK */,
 			);
 			productName = Sample;
 			productReference = 34229CDF2975577F0050639F /* SampleSwiftUI.app */;
@@ -172,7 +180,7 @@
 			);
 			name = SampleUIKit;
 			packageProductDependencies = (
-				34628659299652EE000A129B /* DevRevSDK */,
+				2158570D29DEEE1000635927 /* DevRevSDK */,
 			);
 			productName = SampleUIKit;
 			productReference = 34E22DA2298967FD006B21A1 /* SampleUIKit.app */;
@@ -206,7 +214,7 @@
 			);
 			mainGroup = 34229CD42975574B0050639F;
 			packageReferences = (
-				34628658299652EE000A129B /* XCRemoteSwiftPackageReference "test-devrev-sdk-ios" */,
+				2158570929DEEE0500635927 /* XCRemoteSwiftPackageReference "devrev-sdk-ios" */,
 			);
 			productRefGroup = 34229CE02975577F0050639F /* Products */;
 			projectDirPath = "";
@@ -650,20 +658,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		34628658299652EE000A129B /* XCRemoteSwiftPackageReference "test-devrev-sdk-ios" */ = {
+		2158570929DEEE0500635927 /* XCRemoteSwiftPackageReference "devrev-sdk-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:devrev/test-devrev-sdk-ios.git";
+			repositoryURL = "git@github.com:devrev/devrev-sdk-ios.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		34628659299652EE000A129B /* DevRevSDK */ = {
+		2158570A29DEEE0500635927 /* DevRevSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 34628658299652EE000A129B /* XCRemoteSwiftPackageReference "test-devrev-sdk-ios" */;
+			package = 2158570929DEEE0500635927 /* XCRemoteSwiftPackageReference "devrev-sdk-ios" */;
+			productName = DevRevSDK;
+		};
+		2158570D29DEEE1000635927 /* DevRevSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2158570929DEEE0500635927 /* XCRemoteSwiftPackageReference "devrev-sdk-ios" */;
 			productName = DevRevSDK;
 		};
 		346E64B22983D22100FC660D /* DevRevSDK */ = {

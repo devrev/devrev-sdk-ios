@@ -7,15 +7,15 @@ struct ContentView: View {
 	@State private var userID: String = ""
 
 	#error("The sample app needs a development team set for code signing.")
-	#error("Enter your credentials and organization slug here!")
+	#error("Enter your credentials and support ID here!")
 	private let appID = "<APPID>"
 	private let secret = "<SECRET>"
-	private let organizationSlug = "<SLUG>"
+	private let supportID = "<SUPPORT_ID>"
 
 	init() {
 		DevRev.configure(appID: appID,
 						 secret: secret,
-						 organizationSlug: organizationSlug)
+						 supportID: supportID)
 	}
 
 	var body: some View {

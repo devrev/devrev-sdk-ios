@@ -1,5 +1,5 @@
 Pod::Spec.new do |spec|
-  spec.name                   = "devrev-sdk-ios"
+  spec.name                   = "DevRevSDK"
   spec.version                = "0.9.2"
   spec.summary                = "A podspec for the DevRev iOS SDK"
   spec.description            = <<-DESC

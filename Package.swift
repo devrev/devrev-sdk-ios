@@ -1,11 +1,11 @@
 // swift-tools-version:5.7
 
-import PackageDescription    
-    
+import PackageDescription
+
 let package = Package(
     name: "DevRevSDK",
     platforms: [
-        .iOS(.v15)
+        .iOS(.v13)
     ],
     products: [
         .library(
@@ -18,8 +18,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "DevRevSDK",
-            url: "https://github.com/devrev/devrev-sdk-ios/releases/download/v0.9.2/DevRevSDK.xcframework.zip", 
-            checksum: "3f28597cb0fc2ea725e67a6ae14488ab15c9574dea6fb605e633b0b8982e27cb"
+            url: "https://github.com/devrev/devrev-sdk-ios/releases/download/v0.9.3/DevRevSDK.xcframework.zip",
+            checksum: "1e35219a7f2f79cc6a33a189a1dc69ab9f43cde8e9ef66373cad6c362c0859b0"
         )
     ]
 )

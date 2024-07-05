@@ -46,17 +46,23 @@ Now you should be able to import and use the DevRev SDK.
 # Setting up the DevRev SDK
 ## Step 1: Credentials
 1. Open the **Settings** page.
+
 	<img src="docs/screenshots/screenshot-settings-home.png" />
 1. Under the **Support** section, go to **PLuG Tokens**.
-	<img src="docs/screenshots/screenshot-support-tokens.png" width="250" />
+
+	<img src="docs/screenshots/screenshot-support-tokens.png" width="250" />\
 1. On the **PLuG Tokens** page, you will be able create your credentials under the **App Credentials**. These credentials are referred to as `appID` and `secret` in the code.
 	- Create new credentials, if none exist:
 	<img src="docs/screenshots/screenshot-support-tokens-creating-credentials.png" width="400" />
+
 	- Or maybe reuse any existing ones:
 	<img src="docs/screenshots/screenshot-support-tokens-existing-credentials.png" width="400" />
+
 1. Next, you will have to open the **PLuG Settings** page, and copy the value under **Your Unique App ID**.
 	> This value is referred to as `supportID` in the code.
+
 	<img src="docs/screenshots/screenshot-support-settings.png" width="250" />
+	<br />
 	<img src="docs/screenshots/screenshot-support-settings-id.png" width="400" />
 
 ## Step 2: Initialization

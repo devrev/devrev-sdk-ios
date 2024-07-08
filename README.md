@@ -2,6 +2,8 @@
 - [Table of contents](#table-of-contents)
 - [Requirements](#requirements)
 - [Setup](#setup)
+- [Swift Package Manager (Recommended)](#swift-package-manager-recommended)
+- [CocoaPods](#cocoapods)
 - [Setting up the DevRev SDK](#setting-up-the-devrev-sdk)
 	- [Step 1: Credentials](#step-1-credentials)
 	- [Step 2: Initialization](#step-2-initialization)
@@ -32,6 +34,9 @@
 - Minimum deployment target iOS 15.
 
 # Setup
+
+# Swift Package Manager (Recommended)
+
 You can integrate the DevRev SDK in your project as a Swift Package Manager (SPM) package.
 
 Open your project in Xcode, go to the `Add Package` screen, add the following URL under `Enter Package URL`:
@@ -42,6 +47,15 @@ https://github.com/devrev/devrev-sdk-ios
 Make sure you link the framework under the **Build Phases** screen of your app target. Find the **Link Binary With Libraries** phase and make sure that **DevRevSDK** is linked there.
 
 Now you should be able to import and use the DevRev SDK.
+
+# CocoaPods
+
+The DevRev SDK can also be integrated using CocoaPods. Add the following line to your `Podfile`:
+```
+pod 'DevRevSDK', '~> 0.9.3'
+```
+
+Then run `pod install` in your project directory.
 
 # Setting up the DevRev SDK
 ## Step 1: Credentials

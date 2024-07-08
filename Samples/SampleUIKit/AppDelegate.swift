@@ -4,16 +4,14 @@ import DevRevSDK
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	#error("The sample app needs a development team set for code signing.")
-	#error("Enter your credentials and support ID here!")
+	#error("Enter your credentials here!")
 	private let appID = "<APPID>"
-	private let secret = "<SECRET>"
-	private let supportID = "<SUPPORT_ID>"
+	private let appVersionKey = "<VERSION_KEY_HERE>"
 
 	func application(_ application: UIApplication,
 					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		DevRev.configure(appID: appID,
-						 secret: secret,
-						 supportID: supportID)
+		DevRev.configure(appID: appID)
+		DevRev.startRecording(appVersionKey)
 
 		return true
 	}

@@ -29,7 +29,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func showSupport(_ sender: UIButton) {
-		guard DevRev.isInitialized
+		guard DevRev.isUserContextProvided
 		else {
 			return
 		}

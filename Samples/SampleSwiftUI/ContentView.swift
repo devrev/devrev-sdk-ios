@@ -7,11 +7,15 @@ struct ContentView: View {
 	@State private var userID: String = ""
 
 	#error("The sample app needs a development team set for code signing.")
-	#error("Enter your credentials here!")
+	#error("Enter your credentials and support ID here!")
 	private let appID = "<APPID>"
+	private let secret = "<SECRET>"
+	private let supportID = "<SUPPORT_ID>"
 
 	init() {
-		DevRev.configure(appID: appID)
+		DevRev.configure(appID: appID,
+						 secret: secret,
+						 supportID: supportID)
 	}
 
 	var body: some View {
@@ -25,7 +29,7 @@ struct ContentView: View {
 			Button("Identify the user") {
 				Task {
 					await DevRev.identify(Identification(userID: userID))
-					isUserIdentified = DevRev.isUserContextProvided
+					isUserIdentified = DevRev.isInitialized
 				}
 			}
 			.disabled(userID.isEmpty)

@@ -1,3 +1,4 @@
+import Foundation
 import UIKit
 import DevRevSDK
 
@@ -14,26 +15,47 @@ class ViewController: UIViewController {
 		let isEmpty = sender.text?.isEmpty ?? false
 
 		identifyButton.isEnabled = !isEmpty
-		showSupportButton.isEnabled = identifyButton.isEnabled
 	}
 
-	@IBAction func identify(_ sender: UIButton) {
-		guard let userID = userIDTextField.text
+	@IBAction func identifyUnverifiedUser(_ sender: UIButton) {
+		guard
+			let userID = userIDTextField.text,
+			!userID.isEmpty
 		else {
 			return
 		}
 
 		Task { @MainActor in
-			await DevRev.identify(Identification(userID: userID))
+			await DevRev.identifyUnverifiedUser(Identity(userID: userID))
 		}
 	}
 
 	@IBAction func showSupport(_ sender: UIButton) {
-		guard DevRev.isInitialized
-		else {
-			return
+		Task {
+			guard await DevRev.isUserIdentified
+			else {
+				return
+			}
+			
+			await DevRev.showSupport(from: self)
 		}
+	}
 
-		DevRev.showSupport(from: self)
+	@IBAction func registerPushNotifications(_ sender: Any) {
+		UIApplication.shared.registerForRemoteNotifications()
+	}
+
+	@IBAction func unregisterPushNotifications(_ sender: Any) {
+		UIApplication.shared.unregisterForRemoteNotifications()
+
+		Task {
+			guard
+				let deviceID = UIDevice.current.identifierForVendor?.uuidString
+			else {
+				return
+			}
+
+			await DevRev.unregisterDevice(deviceID)
+		}
 	}
 }

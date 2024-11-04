@@ -1,29 +1,69 @@
+import Foundation
 import UIKit
 import DevRevSDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-	#error("The sample app needs a development team set for code signing.")
-	#error("Enter your credentials and support ID here!")
-	private let appID = "<APPID>"
-	private let secret = "<SECRET>"
-	private let supportID = "<SUPPORT_ID>"
+	// MARK: - Configuration
 
-	func application(_ application: UIApplication,
-					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		DevRev.configure(appID: appID,
-						 secret: secret,
-						 supportID: supportID)
+	#error("The sample app needs a development team set for code signing.")
+	#error("Enter your credentials here!")
+	private let appID = "<APPID>"
+
+	// MARK: - App lifecycle
+
+	func application(
+		_ application: UIApplication,
+		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+	) -> Bool {
+		DevRev.configure(appID: appID)
+
+		Task { @MainActor in
+			await requestPushNotificationsAuthorization()
+		}
 
 		return true
 	}
 
-	// MARK: UISceneSession Lifecycle
+	// MARK: Session lifecycle
 
-	func application(_ application: UIApplication,
+	func application(
+		_ application: UIApplication,
 					 configurationForConnecting connectingSceneSession: UISceneSession,
-					 options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-		UISceneConfiguration(name: "Default Configuration",
-							 sessionRole: connectingSceneSession.role)
+		options: UIScene.ConnectionOptions
+	) -> UISceneConfiguration {
+		.init(
+			name: "Default Configuration",
+			sessionRole: connectingSceneSession.role
+		)
+	}
+
+	// MARK: - Push notifications
+
+	func application(
+		_ application: UIApplication,
+		didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+	) {
+		guard
+			let deviceID = UIDevice.current.identifierForVendor?.uuidString
+		else {
+			return
+		}
+
+		Task {
+			await DevRev.registerDeviceToken(
+				deviceToken,
+				deviceID: deviceID
+			)
+		}
+	}
+
+	private func requestPushNotificationsAuthorization() async {
+		do {
+			let center = UNUserNotificationCenter.current()
+			try await center.requestAuthorization(options: [.alert, .sound, .badge])
+		} catch {
+			print("Could not request authorization for push notifications: \(error)")
+		}
 	}
 }

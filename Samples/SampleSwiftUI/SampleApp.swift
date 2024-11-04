@@ -1,10 +1,13 @@
+import Foundation
 import SwiftUI
 
 @main
 struct SampleApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+	@UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+	
+	var body: some Scene {
+		WindowGroup {
+			ContentView()
+		}
+	}
 }

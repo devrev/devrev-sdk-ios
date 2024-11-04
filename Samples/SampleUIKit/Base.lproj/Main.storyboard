@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="O8h-iE-Qqo">
-                                <rect key="frame" x="16" y="373.33333333333331" width="361" height="130.66666666666669"/>
+                                <rect key="frame" x="16" y="339.66666666666669" width="361" height="198.00000000000006"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User ID" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oXV-vL-HyA">
                                         <rect key="frame" x="20" y="0.0" width="321" height="34"/>
@@ -28,23 +29,39 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yIJ-ha-FQi">
-                                        <rect key="frame" x="92.000000000000014" y="42" width="177.33333333333337" height="40.333333333333343"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Identify the user" cornerStyle="capsule">
-                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle2"/>
-                                        </buttonConfiguration>
+                                        <rect key="frame" x="79" y="42" width="203" height="33"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Identify the unverified user"/>
                                         <connections>
-                                            <action selector="identify:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nvM-wd-5RF"/>
+                                            <action selector="identifyUnverifiedUser:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nvM-wd-5RF"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dft-gX-6SD">
-                                        <rect key="frame" x="60" y="90.333333333333371" width="241" height="40.333333333333343"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Show the support view" cornerStyle="capsule">
-                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle2"/>
-                                        </buttonConfiguration>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dft-gX-6SD">
+                                        <rect key="frame" x="93.666666666666686" y="83" width="174" height="33"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Show the support view"/>
                                         <connections>
                                             <action selector="showSupport:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nig-PE-W2U"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3JG-rA-Eyl" userLabel="Register">
+                                        <rect key="frame" x="66.666666666666686" y="124" width="228" height="33"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Register for push notifications"/>
+                                        <connections>
+                                            <action selector="registerPushNotifications:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4LL-cU-lsQ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6fb-7E-g76" userLabel="Unregister">
+                                        <rect key="frame" x="72" y="165" width="217" height="33"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Push notifications unregister"/>
+                                        <connections>
+                                            <action selector="unregisterPushNotifications:" destination="BYZ-38-t0r" eventType="touchUpInside" id="l3R-vJ-Xop"/>
                                         </connections>
                                     </button>
                                 </subviews>

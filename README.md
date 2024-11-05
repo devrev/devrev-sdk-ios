@@ -39,6 +39,7 @@
 		- [Unregistering from push notifications](#unregistering-from-push-notifications)
 			- [Example](#example-6)
 		- [Handling push notifications](#handling-push-notifications)
+			- [Example](#example-7)
 - [Sample app](#sample-app)
 - [Troubleshooting](#troubleshooting)
 	- [Cannot import the SDK into my app](#cannot-import-the-sdk-into-my-app)
@@ -386,9 +387,21 @@ Task {
 ```
 
 ### Handling push notifications
+In order to properly handle push notifications, you need to implement the following method, usually in the `UNUserNotificationCenterDelegate.userNotificationCenter(_:didReceive:)` or `UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:)`:
 
-> [!IMPORTANT]
-> The DevRev SDK currently supports automatic handling of push notifications. When the user opens a push notification, the SDK will perform the necessary actions based on the content of the notification.
+```swift
+DevRev.processPushNotification(_:)
+```
+
+#### Example
+```swift
+func userNotificationCenter(
+	_ center: UNUserNotificationCenter,
+	didReceive response: UNNotificationResponse
+) async {
+	await DevRev.processPushNotification(response.notification.request.content.userInfo)
+}
+```
 
 # Sample app
 A sample app with use cases for both UIKit and SwiftUI has been provided as part of this repository.

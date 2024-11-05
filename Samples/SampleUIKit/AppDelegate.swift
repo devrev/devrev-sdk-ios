@@ -6,9 +6,9 @@ import DevRevSDK
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	// MARK: - Configuration
 
-	#error("The sample app needs a development team set for code signing.")
-	#error("Enter your credentials here!")
-	private let appID = "<APPID>"
+//	#error("The sample app needs a development team set for code signing.")
+//	#error("Enter your credentials here!")
+	private let appID = "DvRvStPZG9uOmNvcmU6ZHZydi11cy0xOmRldm8vM2ZBSEVDOnBsdWdfc2V0dGluZy8xX198fF9fMjAyNC0wNy0yOSAwOTozMjoxNC4xNjU1Mjc4NTggKzAwMDAgVVRDxlxendsDvRv"
 
 	// MARK: - App lifecycle
 

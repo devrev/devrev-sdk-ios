@@ -5,9 +5,9 @@ import DevRevSDK
 class AppDelegate: NSObject, UIApplicationDelegate {
 	// MARK: - Configuration
 
-	#error("The sample app needs a development team set for code signing.")
-	#error("Enter your credentials here!")
-	private let appID = "<APPID>"
+//	#error("The sample app needs a development team set for code signing.")
+//	#error("Enter your credentials here!")
+	private let appID = "DvRvStPZG9uOmNvcmU6ZHZydi11cy0xOmRldm8vODA1OnBsdWdfc2V0dGluZy8xX198fF9fMjAyNC0wOC0zMCAwOTozOTozNS4zNjczNzE0MDYgKzAwMDAgVVRDxlxendsDvRv"
 
 	// MARK: - App lifecycle
 
@@ -15,6 +15,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		_ application: UIApplication,
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
 	) -> Bool {
+
 		DevRev.configure(appID: appID)
 
 		Task { @MainActor in

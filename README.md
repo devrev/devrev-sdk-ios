@@ -1,65 +1,71 @@
-# Table of contents
-- [Table of contents](#table-of-contents)
-- [Requirements](#requirements)
-- [Integration](#integration)
-	- [Swift Package Manager (Recommended)](#swift-package-manager-recommended)
-	- [CocoaPods](#cocoapods)
-- [Setting up the DevRev SDK](#setting-up-the-devrev-sdk)
-	- [Step 1: Credentials](#step-1-credentials)
-	- [Step 2: Configuration](#step-2-configuration)
-			- [Example](#example)
-		- [UIKit apps](#uikit-apps)
-		- [SwiftUI apps](#swiftui-apps)
-- [Features](#features)
-	- [Identification](#identification)
-		- [Anonymous identification](#anonymous-identification)
-		- [Unverified identification](#unverified-identification)
-		- [Examples](#examples)
-	- [PLuG support chat](#plug-support-chat)
-		- [UIKit](#uikit)
-			- [Examples](#examples-1)
-		- [SwiftUI](#swiftui)
-		- [New conversation closure](#new-conversation-closure)
-			- [Example](#example-1)
-	- [Analytics](#analytics)
-			- [Example](#example-2)
-	- [Observability](#observability)
-		- [Opting in/out](#opting-inout)
-		- [Session recording](#session-recording)
-		- [Session properties](#session-properties)
-		- [Masking sensitive data](#masking-sensitive-data)
-		- [Timers](#timers)
-			- [Example](#example-3)
-		- [Screen tracking](#screen-tracking)
-			- [Example](#example-4)
-	- [Push notifications](#push-notifications)
-		- [Configuration](#configuration)
-		- [Registering for push notifications](#registering-for-push-notifications)
-			- [Example](#example-5)
-		- [Unregistering from push notifications](#unregistering-from-push-notifications)
-			- [Example](#example-6)
-		- [Handling push notifications](#handling-push-notifications)
-			- [Example](#example-7)
-- [Sample app](#sample-app)
-- [Troubleshooting](#troubleshooting)
-	- [Cannot import the SDK into my app](#cannot-import-the-sdk-into-my-app)
-	- [How does the DevRev SDK handle errors?](#how-does-the-devrev-sdk-handle-errors)
-	- [Why won't the support chat show?](#why-wont-the-support-chat-show)
-	- [Why am I not receiving push notifications?](#why-am-i-not-receiving-push-notifications)
+# DevRev SDK for iOS
+DevRev SDK, used for integrating DevRev services into your iOS app.
 
-# Requirements
-- Latest stable Xcode from the [App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12), 14.0 or later.
-- Swift 5.7 or later.
-- Minimum deployment target iOS 15.
+## Table of contents
+- [DevRev SDK for iOS](#devrev-sdk-for-ios)
+	- [Table of contents](#table-of-contents)
+	- [Requirements](#requirements)
+	- [Integration](#integration)
+		- [Swift Package Manager (Recommended)](#swift-package-manager-recommended)
+		- [CocoaPods](#cocoapods)
+	- [Setting up the DevRev SDK](#setting-up-the-devrev-sdk)
+		- [Step 1: Credentials](#step-1-credentials)
+		- [Step 2: Configuration](#step-2-configuration)
+				- [Example](#example)
+			- [UIKit apps](#uikit-apps)
+			- [SwiftUI apps](#swiftui-apps)
+	- [Features](#features)
+		- [Identification](#identification)
+			- [Anonymous identification](#anonymous-identification)
+			- [Unverified identification](#unverified-identification)
+			- [Updating the user](#updating-the-user)
+			- [Examples](#examples)
+		- [PLuG support chat](#plug-support-chat)
+			- [UIKit](#uikit)
+				- [Examples](#examples-1)
+			- [SwiftUI](#swiftui)
+			- [New conversation closure](#new-conversation-closure)
+				- [Example](#example-1)
+		- [Analytics](#analytics)
+				- [Example](#example-2)
+		- [Observability](#observability)
+			- [Opting in/out](#opting-inout)
+			- [Session recording](#session-recording)
+			- [Session properties](#session-properties)
+			- [Masking sensitive data](#masking-sensitive-data)
+			- [Timers](#timers)
+				- [Example](#example-3)
+			- [Screen tracking](#screen-tracking)
+				- [Example](#example-4)
+		- [Push notifications](#push-notifications)
+			- [Configuration](#configuration)
+			- [Registering for push notifications](#registering-for-push-notifications)
+				- [Example](#example-5)
+			- [Unregistering from push notifications](#unregistering-from-push-notifications)
+				- [Example](#example-6)
+			- [Handling push notifications](#handling-push-notifications)
+				- [Example](#example-7)
+	- [Sample app](#sample-app)
+	- [Troubleshooting](#troubleshooting)
+		- [Cannot import the SDK into my app](#cannot-import-the-sdk-into-my-app)
+		- [How does the DevRev SDK handle errors?](#how-does-the-devrev-sdk-handle-errors)
+		- [Why won't the support chat show?](#why-wont-the-support-chat-show)
+		- [Why am I not receiving push notifications?](#why-am-i-not-receiving-push-notifications)
+	- [License](#license)
 
-# Integration
+## Requirements
+- Latest stable Xcode from the [App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12), 16.0 or later.
+- Swift 5.9 or later.
+- Minimum deployment target iOS 13.
+
+## Integration
 
 The DevRev SDK can be integrated through Swift Package Manager (SPM) or CocooaPods.
 
 > [!NOTE]
 > We recommend integrating the DevRev SDK using Swift Package Manager.
 
-## Swift Package Manager (Recommended)
+### Swift Package Manager (Recommended)
 
 You can integrate the DevRev SDK in your project as a Swift Package Manager (SPM) package.
 
@@ -77,7 +83,7 @@ Make sure you link the framework under the **Build Phases** screen of your app t
 
 Now you should be able to import and use the DevRev SDK.
 
-## CocoaPods
+### CocoaPods
 
 The DevRev SDK can also be integrated using CocoaPods. Add the following line to your `Podfile`:
 ```
@@ -86,14 +92,13 @@ pod 'DevRevSDK', '~> 1.0.0'
 
 Then run `pod install` in your project directory.
 
-# Setting up the DevRev SDK
-## Step 1: Credentials
+## Setting up the DevRev SDK
+### Step 1: Credentials
 1. Open the DevRev web app at [https://app.devrev.ai](https://app.devrev.ai).
 1. Go to the **Settings** page.
 1. Then open the **PLuG Settings** page, and copy the value under **Your Unique App ID**.
 
-## Step 2: Configuration
-
+### Step 2: Configuration
 > [!IMPORTANT]
 > The SDK must be configured before you can use any of its features.
 
@@ -103,44 +108,54 @@ Once you have the credentials, you can configure the DevRev SDK in your app. The
 DevRev.configure(appID:)
 ```
 
-#### Example
+##### Example
 ```swift
 DevRev.configure(appID: "abcdefg12345")
 ```
 
-### UIKit apps
+#### UIKit apps
 Configure the SDK in the `AppDelegate.application(_:didFinishLaunchingWithOptions:)` method.
 
-### SwiftUI apps
+#### SwiftUI apps
 Depending on the architecture of your app, you will need to configure the SDK at your entry point or initial view of the app.
 
-# Features
-## Identification
+## Features
+### Identification
 Certain features of the DevRev SDK **require** a user identification. There are two methods to identify your users:
 - **Anonymous users**: Creates an anonymous user with an optional user identifier, no other data is stored or associated with the user.
 - **Unverified users**: Identifies the user with a unique identifier, but does not verify the user's identity with the DevRev backend.
 
+The identification functions should be placed at the appropriate place in your app after you login your user. If you have the user information at app launch, call the function after the `DevRev.configure(appID:)` method.
+
 > [!IMPORTANT]
 > If you haven't previously identified the user, the DevRev SDK will automatically create an anonymous user for you right after the SDK has been configured.
 
-### Anonymous identification
+#### Anonymous identification
 The anonymous identification method is used to create an anonymous user with an optional user identifier.
 
 ```swift
-DevRevInterop.identifyAnonymousUser(userID:)
+DevRev.identifyAnonymousUser(userID:)
 ```
 
-### Unverified identification
+#### Unverified identification
 The unverified identification method is used to identify the user with a unique identifier, but does not verify the user's identity with the DevRev backend.
 
 ```swift
-DevRevInterop.identifyUnverifiedUser(_:)
+DevRev.identifyUnverifiedUser(_:)
 ```
 
 The function accepts the `DevRev.Identity` structure, with the user identifier (`userID`) as the only required property, all other properties are optional.
 
+#### Updating the user
+You can update the user's information using the following method:
 
-### Examples
+```swift
+DevRev.updateUser(_:)
+```
+
+The function accepts the `DevRev.Identity` structure.
+
+#### Examples
 
 > [!NOTE]
 The identification functions are asynchronous, make sure that you wrap them in a `Task` when calling them from synchronous contexts.
@@ -150,15 +165,15 @@ The identification functions are asynchronous, make sure that you wrap them in a
 await DevRev.identifyAnonymousUser()
 
 // Identify an unverified user with its email address an user identifier.
-await DevRev.identifyUnverifiedUser(Identification(userID: "foo@example.org"))
+await DevRev.identifyUnverifiedUser(Identity(userID: "foo@example.org"))
+
+// Update the user's information.
+await DevRev.updateUser(Identity(organizationID: "foo-bar-1337"))
 ```
 
-The identification function should be placed at the appropriate place in your app after you login your user. If you have the user information at app launch, call the function after the `DevRev.configure(appID:secret:supportID:)` method.
-
-## PLuG support chat
-
-### UIKit
-The support chat feature can be shown as a modal screen from either a specific view controller or the top-most one, or can be pushed to a navigation stack.
+### PLuG support chat
+#### UIKit
+The support chat feature can be shown as a modal screen from a specific view controller or the top-most one, or can be pushed onto a navigation stack.
 
 The following overloaded method will show the support chat screen from a specific view controller or pushed to a navigation stack:
 ```swift
@@ -173,7 +188,7 @@ If you want to show the support chat screen from the top-most view controller, y
 await DevRev.showSupport(isAnimated:)
 ```
 
-#### Examples
+##### Examples
 ```swift
 /// Push the support chat screen to a navigation stack.
 await DevRev.showSupport(from: mainNavigationController)
@@ -185,14 +200,14 @@ await DevRev.showSupport(from: settingsViewController)
 await DevRev.showSupport(isAnimated: false)
 ```
 
-### SwiftUI
+#### SwiftUI
 In order to show the support chat screen in a SwiftUI app, you can use the following view:
 
 ```swift
 DevRev.supportView
 ```
 
-### New conversation closure
+#### New conversation closure
 When a new conversation has been created, you can receive a callback using the closure below:
 
 ```swift
@@ -201,14 +216,14 @@ DevRev.conversationCreatedCompletion
 
 That way your app will be able to access the ID of the newly created conversation.
 
-#### Example
+##### Example
 ```swift
 DevRev.conversationCreatedCompletion = { conversationID in
 	print("A new conversation has been created: \(conversationID).")
 }
 ```
 
-## Analytics
+### Analytics
 The DevRev SDK supports sending custom analytic events using a name and a string dictionary.
 
 You can track them using the following function:
@@ -216,15 +231,15 @@ You can track them using the following function:
 DevRev.trackEvent(name:properties:)
 ```
 
-#### Example
+##### Example
 ```swift
 await DevRev.trackEvent(name: "open-message-screen", properties: ["id": "foo-bar-1337"])
 ```
 
-## Observability
+### Observability
 The DevRev SDK provides observability features to help you understand how your users are interacting with your app.
 
-### Opting in/out
+#### Opting in/out
 The observability features are opted-in by default, meaning that they are enabled from start.
 You can opt-out of the observability features by calling the following method:
 
@@ -238,7 +253,7 @@ To opt back in, you can call the following method:
 DevRev.resumeAllMonitoring()
 ```
 
-### Session recording
+#### Session recording
 You can enable session recording to record user interactions with your app.
 
 > [!CAUTION]
@@ -251,7 +266,7 @@ The session recording feature has a number of methods to help you control the re
 - `DevRev.pauseRecording()`: Pauses the ongoing session recording.
 - `DevRev.resumeRecording()`: Resumes a paused session recording.
 
-### Session properties
+#### Session properties
 You can add custom properties to the session recording to help you understand the context of the session. The properties are defined as a dictionary of string values.
 
 ```swift
@@ -264,7 +279,7 @@ You also have the ability to clear the session properties in scenarios like user
 DevRev.clearSessionProperties()
 ```
 
-### Masking sensitive data
+#### Masking sensitive data
 In order to protect sensitive data the DevRev SDK provides an auto-masking feature, which masks the data before it is being sent to the server. Input views such as text fields, text views, and web views are automatically masked.
 
 While the auto-masking mechanism might be sufficient for most cases, you can also manually mark other views as sensitive using the following method:
@@ -279,7 +294,7 @@ If any previously masked views need to be unmasked, you can use the following me
 DevRev.unmarkSensitiveViews(_:)
 ```
 
-### Timers
+#### Timers
 As part of the observability features, the DevRev SDK provides a timer mechanism to help you measure the time spent on a specific task. Events such as response time, loading time, or any other time-based event can be measured using the timer.
 
 The mechanism works using balanced start and stop methods that both accept a timer name and an optional dictionary of properties.
@@ -294,7 +309,7 @@ And balance it with the stop method:
 DevRev.stopTimer(_:properties:)
 ```
 
-#### Example
+##### Example
 ```swift
 DevRev.startTimer("response-time", properties: ["id": "foo-bar-1337"])
 
@@ -303,32 +318,29 @@ DevRev.startTimer("response-time", properties: ["id": "foo-bar-1337"])
 DevRev.stopTimer("response-time", properties: ["id": "foo-bar-1337"])
 ```
 
-### Screen tracking
+#### Screen tracking
 The DevRev SDK provides automatic screen tracking to help you understand how users are navigating through your app. While view controllers are automatically tracked, you can also manually track screens using the following method:
 
 ```swift
 DevRev.trackScreenName(_:)
 ```
 
-#### Example
+##### Example
 ```swift
 DevRev.trackScreenName("profile-screen")
 ```
 
-## Push notifications
-
+### Push notifications
 You can configure your app to receive push notifications from the DevRev SDK. The SDK is able to handle push notifications and perform actions based on the content of the notification.
 
 The DevRev backend sends push notifications to your app to notify users about new messages in the PLuG support chat. In the future, the push notification support will be expanded with additional features.
 
-### Configuration
-
+#### Configuration
 In order to receive push notifications, you need to configure your DevRev organization by following the [Push Notifications integration guide](#).
 
 You need to make sure that your iOS app is configured to receive push notifications. You can follow the [Apple documentation](https://developer.apple.com/documentation/usernotifications/registering_your_app_with_apns) to set up your app to receive push notifications.
 
-### Registering for push notifications
-
+#### Registering for push notifications
 > [!IMPORTANT]
 > Push notifications require that the SDK has been configured and the user has been identified (unverified and anonymous users). The user identification is required to send the push notification to the correct user.
 
@@ -340,7 +352,7 @@ DevRev.registerDeviceToken(_:deviceID:)
 
 The method requires a device identifier, which might be an identifier unique to your system or the Apple provided vendor identifier (IDFV). The registration is usually called from the `AppDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:)` method.
 
-#### Example
+##### Example
 ```swift
 func application(
 	_ application: UIApplication,
@@ -361,8 +373,7 @@ func application(
 }
 ```
 
-### Unregistering from push notifications
-
+#### Unregistering from push notifications
 In cases when your app no longer wants to receive push notifications, you can unregister the device from receiving them. The method to unregister the device is:
 
 ```swift
@@ -371,7 +382,7 @@ DevRev.unregisterDevice(_:)
 
 The method requires the device identifier, which is the same as the one used for registering the device. The best place to place the method is after you call `UIApplication.unregisterForRemoteNotifications()` in your app.
 
-#### Example
+##### Example
 ```swift
 UIApplication.shared.unregisterForRemoteNotifications()
 
@@ -386,14 +397,14 @@ Task {
 }
 ```
 
-### Handling push notifications
+#### Handling push notifications
 In order to properly handle push notifications, you need to implement the following method, usually in the `UNUserNotificationCenterDelegate.userNotificationCenter(_:didReceive:)` or `UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:)`:
 
 ```swift
 DevRev.processPushNotification(_:)
 ```
 
-#### Example
+##### Example
 ```swift
 func userNotificationCenter(
 	_ center: UNUserNotificationCenter,
@@ -403,7 +414,7 @@ func userNotificationCenter(
 }
 ```
 
-# Sample app
+## Sample app
 A sample app with use cases for both UIKit and SwiftUI has been provided as part of this repository.
 
 Before you start using the sample app you will need to configure it to be used with your Apple Developer team and your DevRev credentials. For your convenience the code has been marked with compiler error directives (`#error`) at the places that need attention.
@@ -417,15 +428,18 @@ Before you start using the sample app you will need to configure it to be used w
 	- Select your development team under Team (4).
 	<img src="docs/screenshots/screenshot-xcode-signing.png" width="400" />
 
-# Troubleshooting
-## Cannot import the SDK into my app
+## Troubleshooting
+### Cannot import the SDK into my app
 Check the [Setup](#setup) again and make sure that the DevRevSDK framework is properly linked.
 
-## How does the DevRev SDK handle errors?
+### How does the DevRev SDK handle errors?
 The DevRev SDK outputs all errors in the console using Apple's Unified Logging System under the subsystem `ai.devrev.sdk`.
 
-## Why won't the support chat show?
+### Why won't the support chat show?
 Make sure you have called one of the identification methods properly (`DevRev.identifyUnverifiedUser(...)` or `DevRev.identifyAnonymousUser(...)`).
 
-## Why am I not receiving push notifications?
+### Why am I not receiving push notifications?
 Make sure that you have configured your app to receive push notifications and that you have registered your device with the DevRev SDK.
+
+## License
+Apache 2.0

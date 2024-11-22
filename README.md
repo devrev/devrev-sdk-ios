@@ -130,6 +130,9 @@ The identification functions should be placed at the appropriate place in your a
 > [!IMPORTANT]
 > If you haven't previously identified the user, the DevRev SDK will automatically create an anonymous user for you right after the SDK has been configured.
 
+> [!IMPORTANT]
+> The user, organization and account traits in the `Identity` structure also support custom fields, which need to be configured in the DevRev web app before they can be used. For more information, see [Object customization](https://devrev.ai/docs/product/object-customization).
+
 #### Anonymous identification
 The anonymous identification method is used to create an anonymous user with an optional user identifier.
 
@@ -154,6 +157,9 @@ DevRev.updateUser(_:)
 ```
 
 The function accepts the `DevRev.Identity` structure.
+
+> [!IMPORTANT]
+> The `userID` property can *not* be updated.
 
 #### Examples
 
@@ -265,6 +271,7 @@ The session recording feature has a number of methods to help you control the re
 - `DevRev.stopRecording()`: Stops the session recording and uploads it to the portal.
 - `DevRev.pauseRecording()`: Pauses the ongoing session recording.
 - `DevRev.resumeRecording()`: Resumes a paused session recording.
+- `DevRev.processAllOnDemandSessions()`: Stops the ongoing user recording and sends all on-demand sessions along with the current recording.
 
 #### Session properties
 You can add custom properties to the session recording to help you understand the context of the session. The properties are defined as a dictionary of string values.

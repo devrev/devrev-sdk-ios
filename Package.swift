@@ -18,8 +18,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "DevRevSDK",
-            url: "https://github.com/devrev/devrev-sdk-ios/releases/download/v1.0.0-beta.3/DevRevSDK.xcframework.zip",
-            checksum: "7443415f681b7f0c7277613a684d1148ccfec4bb786b1f2a5a1b27e9878bd0e4"
+            url: "https://github.com/devrev/devrev-sdk-ios/releases/download/v1.0.0-beta.4/DevRevSDK.xcframework.zip",
+            checksum: "8e823a48d08b2279975adfe2c4b5b8d7d19bd99083d1ff161c3f4c4cb326b917"
         )
     ]
 )

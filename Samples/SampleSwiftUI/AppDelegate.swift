@@ -5,9 +5,9 @@ import DevRevSDK
 class AppDelegate: NSObject, UIApplicationDelegate {
 	// MARK: - Configuration
 
-	//	#error("The sample app needs a development team set for code signing.")
-	//	#error("Enter your credentials here!")
-	private let appID = "DvRvStPZG9uOmNvcmU6ZHZydi11cy0xOmRldm8vM2ZBSEVDOnBsdWdfc2V0dGluZy8xX198fF9fMjAyNC0wNy0yOSAwOTozMjoxNC4xNjU1Mjc4NTggKzAwMDAgVVRDxlxendsDvRv"
+	#error("The sample app needs a development team set for code signing.")
+	#error("Enter your credentials here!")
+	private let appID = "<APPID>"
 
 	// MARK: - App lifecycle
 
@@ -16,11 +16,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
 	) -> Bool {
 		DevRev.configure(appID: appID)
-		DevRev.inAppLinkHandler = { url -> Void in
-			if application.canOpenURL(url) {
-				application.open(url)
-			}
-		}
 
 		Task { @MainActor in
 			await requestPushNotificationsAuthorization()

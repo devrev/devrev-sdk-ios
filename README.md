@@ -229,6 +229,21 @@ DevRev.conversationCreatedCompletion = { conversationID in
 }
 ```
 
+### In-app link handling
+The DevRev SDK provides a mechanism to handle links opened from within any screen that is part of the DevRev SDK.
+
+You can fully customize the link handling behavior by setting the specialized in-app link handler. That way you can decide what should happen when a link is opened from within the app.
+
+```swift
+DevRev.inAppLinkHandler: ((URL) -> Void)?
+```
+
+You can further customize the behavior by setting the `shouldDismissModalsOnOpenLink` boolean flag. This flag controls whether the DevRev SDK should dismiss the top-most modal screen when a link is opened.
+
+```swift
+DevRev.shouldDismissModalsOnOpenLink: Bool
+```
+
 ### Analytics
 The DevRev SDK supports sending custom analytic events using a name and a string dictionary.
 

@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for in-app link handling.
 - Added support for on-demand (offline) sessions.
 
+### Fixed
+- Fixed an issue where the SDK would not properly read a previously identified user across sessions.
+
 ## [1.0.0-beta.3] - 2024-11-06
 
 ### Changed

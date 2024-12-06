@@ -50,6 +50,13 @@ struct ContentView: View {
 				}
 			}
 			.modifier(ButtonModifier())
+
+			Button("Create a new conversation") {
+				Task { @MainActor in
+					await DevRev.createSupportConversation()
+				}
+			}
+			.modifier(ButtonModifier())
 		}
 		.sheet(isPresented: $isSupportVisible) {
 			DevRev.supportView.ignoresSafeArea()

@@ -213,6 +213,13 @@ In order to show the support chat screen in a SwiftUI app, you can use the follo
 DevRev.supportView
 ```
 
+#### Creating a new conversation
+You have the ability to create a new conversation from within your app. The method will show the support chat screen and create a new conversation at the same time.
+
+```swift
+DevRev.createConversation()
+```
+
 #### New conversation closure
 When a new conversation has been created, you can receive a callback using the closure below:
 

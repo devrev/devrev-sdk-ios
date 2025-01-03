@@ -18,14 +18,17 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 		- [Identification](#identification)
 			- [Anonymous identification](#anonymous-identification)
 			- [Unverified identification](#unverified-identification)
+		- [Verified identification](#verified-identification)
 			- [Updating the user](#updating-the-user)
 			- [Examples](#examples)
 		- [PLuG support chat](#plug-support-chat)
 			- [UIKit](#uikit)
 				- [Examples](#examples-1)
 			- [SwiftUI](#swiftui)
+			- [Creating a new conversation](#creating-a-new-conversation)
 			- [New conversation closure](#new-conversation-closure)
 				- [Example](#example-1)
+		- [In-app link handling](#in-app-link-handling)
 		- [Analytics](#analytics)
 				- [Example](#example-2)
 		- [Observability](#observability)
@@ -62,8 +65,8 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 
 The DevRev SDK can be integrated through Swift Package Manager (SPM) or CocooaPods.
 
-> [!NOTE]
-> We recommend integrating the DevRev SDK using Swift Package Manager.
+> [!CAUTION]
+> We recommend integrating the DevRev SDK using Swift Package Manager. CocoaPods is in [maintenance mode](https://blog.cocoapods.org/CocoaPods-Support-Plans/) since August 2024 and will be [deprecated in the future](https://blog.cocoapods.org/CocoaPods-Specs-Repo/).
 
 ### Swift Package Manager (Recommended)
 
@@ -96,7 +99,7 @@ Then run `pod install` in your project directory.
 ### Step 1: Credentials
 1. Open the DevRev web app at [https://app.devrev.ai](https://app.devrev.ai).
 1. Go to the **Settings** page.
-1. Then open the **PLuG Settings** page, and copy the value under **Your Unique App ID**.
+1. Then open the **PLuG Chat** page, and copy the value under **Your Unique App ID**.
 
 ### Step 2: Configuration
 > [!IMPORTANT]
@@ -148,6 +151,13 @@ DevRev.identifyUnverifiedUser(_:)
 ```
 
 The function accepts the `DevRev.Identity` structure, with the user identifier (`userID`) as the only required property, all other properties are optional.
+
+### Verified identification
+The verified identification method is used to identify the user with a unique identifier and verify the user's identity with the DevRev backend.
+
+```swift
+DevRev.identifyVerifiedUser(_:sessionToken:)
+```
 
 #### Updating the user
 You can update the user's information using the following method:

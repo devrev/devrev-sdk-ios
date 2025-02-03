@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "DevRevSDK",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v15)
     ],
     products: [
         .library(
@@ -18,8 +18,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "DevRevSDK",
-            url: "https://github.com/devrev/devrev-sdk-ios/releases/download/v1.0.2/DevRevSDK.xcframework.zip",
-            checksum: "402aa01a6094dc562992ecaf4e23cd63d827d5a5258fee7a810c7054cf31c353"
+            url: "https://github.com/devrev/devrev-sdk-ios/releases/download/v1.0.3/DevRevSDK.xcframework.zip",
+            checksum: "9aac35d9bb90cd6ef32be7ef034476c7b36b32383b141237ab38d60e4a4fde51"
         )
     ]
 )

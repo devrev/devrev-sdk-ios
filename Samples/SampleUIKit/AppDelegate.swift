@@ -6,8 +6,9 @@ import DevRevSDK
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	// MARK: - Configuration
 
-	#error("The sample app needs a development team set for code signing.")
-	#error("Enter your credentials here!")
+	#warning("The sample app needs a development team set for code signing.")
+	#warning("Enter your credentials here!")
+	let testOrganizer = UITestOrganizer()
 	private let appID = "<APPID>"
 
 	// MARK: - App lifecycle
@@ -16,6 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		_ application: UIApplication,
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 	) -> Bool {
+		guard
+			let appID = testOrganizer.isInTestMode ? testOrganizer.appID : appID
+		else {
+			fatalError("Missing app ID for testing")
+		}
+
 		DevRev.configure(appID: appID)
 
 		Task { @MainActor in

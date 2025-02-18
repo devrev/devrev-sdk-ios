@@ -7,8 +7,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 	#warning("The sample app needs a development team set for code signing.")
 	#warning("Enter your credentials here!")
-	private let appID = "DvRvStPZG9uOmNvcmU6ZHZydi11cy0xOmRldm8vM2ZBSEVDOnBsdWdfc2V0dGluZy8xX198fF9fMjAyNC0wNy0yOSAwOTozMjoxNC4xNjU1Mjc4NTggKzAwMDAgVVRDxlxendsDvRv"
-	private let testOrganizer = UITestOrganizer()
+	let testOrganizer = UITestOrganizer()
+	private let appID = "<APPID>"
 
 	// MARK: - App lifecycle
 

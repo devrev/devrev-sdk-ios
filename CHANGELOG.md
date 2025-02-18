@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-02-18
+
+### Added
+- Introducing a logout mechanism that clears the user's credentials, unregisters the device from receiving push notifications, and stops the session recording.
+- Added a boolean flag to check if the SDK has been configured.
+- Added a boolean flag to check if the user has been identified.
+- Added a boolean flag to check if the session is being recorded.
+- Added a boolean flag to check if the monitoring is enabled.
+- Added a boolean flag to check if the on-demand sessions are enabled.
+
 ## [1.0.3] - 2025-02-03
 
 ### Fixed

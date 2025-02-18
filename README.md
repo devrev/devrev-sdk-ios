@@ -14,8 +14,9 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 		- [Identification](#identification)
 			- [Anonymous identification](#anonymous-identification)
 			- [Unverified identification](#unverified-identification)
-		- [Verified identification](#verified-identification)
+			- [Verified identification](#verified-identification)
 			- [Updating the user](#updating-the-user)
+			- [Logout](#logout)
 			- [Examples](#examples)
 		- [PLuG support chat](#plug-support-chat)
 			- [UIKit](#uikit)
@@ -95,6 +96,11 @@ The SDK will be ready for use once you execute the following configuration metho
 ```swift
 DevRev.configure(appID:)
 ```
+Use this property to check whether the DevRev SDK has been configured:
+```swift
+await DevRev.isConfigured
+```
+
 For example:
 
 ```swift
@@ -136,7 +142,7 @@ DevRev.identifyUnverifiedUser(_:)
 
 The function accepts the `DevRev.Identity` structure, with the user identifier (`userID`) as the only required property, all other properties are optional.
 
-### Verified identification
+#### Verified identification
 The verified identification method is used to identify the user with a unique identifier and verify the user's identity with the DevRev backend.
 
 ```swift
@@ -150,10 +156,24 @@ You can update the user's information using the following method:
 DevRev.updateUser(_:)
 ```
 
+Use this property to check whether the user is identified in the current session:
+```swift
+await DevRev.isUserIdentified
+```
+
 The function accepts the `DevRev.Identity` structure.
 
 > [!IMPORTANT]
 > The `userID` property can *not* be updated.
+
+#### Logout
+You can perform a logout of the current user by calling the following method:
+
+```swift
+DevRev.logout(deviceID:)
+```
+
+The user will be logged out by clearing their credentials, as well as unregistering the device from receiving push notifications, and stopping the session recording.
 
 #### Examples
 
@@ -273,6 +293,11 @@ To opt back in, use the following method:
 DevRev.resumeAllMonitoring()
 ```
 
+You can check whether session monitoring has been enabled by using this property:
+```swift
+DevRev.isMonitoringEnabled
+```
+
 #### Session recording
 You can enable session recording to capture user interactions with your app.
 
@@ -287,6 +312,16 @@ The session recording feature includes the following methods to control the reco
 |`DevRev.pauseRecording()`|Pauses the ongoing session recording.|
 |`DevRev.resumeRecording()`|Resumes a paused session recording.|
 |`DevRev.processAllOnDemandSessions()`| Stops the ongoing user recording and sends all on-demand sessions along with the current recording. |
+
+Using this property will return the status of the session recording:
+```swift
+DevRev.isRecording
+```
+
+To check if on-demand sessions are enabled, use:
+```swift
+DevRev.areOnDemandSessionsEnabled
+```
 
 #### Session properties
 You can add custom properties to the session recording to help you understand the context of the session. The properties are defined as a dictionary of string values.

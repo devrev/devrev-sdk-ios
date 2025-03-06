@@ -9,5 +9,7 @@ enum Constants {
 		static let sessionAnalytics = "SessionAnalyticsCell"
 		static let support = "SupportCell"
 		static let main = "MainCell"
+		static let status = "StatusCell"
+		static let textField = "TextFieldCell"
 	}
 }

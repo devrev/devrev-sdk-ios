@@ -212,6 +212,10 @@ await DevRev.showSupport(isAnimated:)
 
 ##### Examples
 ```swift
+/// When set to true (default), the DevRev UI will adapt theme dynamically to the system appearance.
+/// Set this flag to false to force the DevRev UI to use the default theme configured in the DevRev portal.
+DevRev.prefersSystemTheme: Bool
+
 /// Push the support chat screen to a navigation stack.
 await DevRev.showSupport(from: mainNavigationController)
 

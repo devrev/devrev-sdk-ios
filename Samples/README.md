@@ -16,7 +16,7 @@ Before you start using the sample app you will need to configure it to be used w
 
 1. Open the DevRev web app at [https://app.devrev.ai](https://app.devrev.ai) and go to the **Settings** page.
 2. Under **PLuG settings** copy the value under **Your unique App ID**.
-3. Add your credentials to the relevant AppDelegate.swift of the SwiftUI or UIKit sample.
+3. Add your credentials to the relevant `AppDelegate.swift` of the SwiftUI or UIKit sample.
    - After you have added the credentials, delete or comment out the compiler error lines in the respective files (`AppDelegate.swift`).
 4. Configure the code signing for the sample target:
 	- Open the project settings (1),

@@ -4,12 +4,14 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 ## Table of contents
 - [DevRev SDK for iOS](#devrev-sdk-for-ios)
 	- [Table of contents](#table-of-contents)
-	- [Requirements](#requirements)
-	- [Integration](#integration)
-		- [Swift Package Manager (Recommended)](#swift-package-manager-recommended)
-		- [CocoaPods](#cocoapods)
-			- [UIKit apps](#uikit-apps)
-			- [SwiftUI apps](#swiftui-apps)
+	- [Quickstart](#quickstart)
+		- [Requirements](#requirements)
+		- [Integration](#integration)
+			- [Swift Package Manager (Recommended)](#swift-package-manager-recommended)
+			- [CocoaPods](#cocoapods)
+		- [Set up the DevRev SDK](#set-up-the-devrev-sdk)
+				- [UIKit apps](#uikit-apps)
+				- [SwiftUI apps](#swiftui-apps)
 	- [Features](#features)
 		- [Identification](#identification)
 			- [Anonymous identification](#anonymous-identification)
@@ -26,8 +28,9 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 			- [New conversation closure](#new-conversation-closure)
 				- [Example](#example)
 		- [In-app link handling](#in-app-link-handling)
+		- [Dynamic theme configuration](#dynamic-theme-configuration)
 		- [Analytics](#analytics)
-				- [Example](#example-1)
+			- [Example](#example-1)
 		- [Session analytics](#session-analytics)
 			- [Opting-in or out](#opting-in-or-out)
 			- [Session recording](#session-recording)
@@ -47,20 +50,22 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 				- [Example](#example-6)
 	- [Sample app](#sample-app)
 	- [Troubleshooting](#troubleshooting)
+	- [Migration guide](#migration-guide)
 
-## Requirements
+## Quickstart
+### Requirements
 - Xcode 16.0 or higher (latest stable version available on the App Store)
 - Swift 5.9 or later
 - Set the minimum deployment target for your iOS application as iOS 15
 
-## Integration
+### Integration
 
 The DevRev SDK can be integrated using either Swift Package Manager (SPM) or CocoaPods.
 
 > [!CAUTION]
 > We recommend integrating the DevRev SDK using Swift Package Manager. CocoaPods is in [maintenance mode](https://blog.cocoapods.org/CocoaPods-Support-Plans/) since August 2024 and will be [deprecated in the future](https://blog.cocoapods.org/CocoaPods-Specs-Repo/).
 
-### Swift Package Manager (Recommended)
+#### Swift Package Manager (Recommended)
 
 You can integrate the DevRev SDK in your project as a Swift Package Manager (SPM) package.
 
@@ -74,19 +79,20 @@ To integrate the DevRev SDK into your project using SPM:
 
 Now you should be able to import and use the DevRev SDK in your project.
 
-### CocoaPods
+#### CocoaPods
 
 To integrate the DevRev SDK using CocoaPods:
 
-1. Add the following to your Podfile:
+1. Add the following to your `Podfile`:
 	```ruby
    pod 'DevRevSDK', '~> 1.0.0'
-   ```
+    ```
+
 2. Run `pod install` in your project directory.
 
 This will install the DevRev SDK in your project, making it ready for use.
 
-## Set up the DevRev SDK
+### Set up the DevRev SDK
 
 1. Open the DevRev web app at [https://app.devrev.ai](https://app.devrev.ai) and go to the **Settings** page.
 2. Under **PLuG settings** copy the value under **Your unique App ID**.
@@ -96,6 +102,7 @@ The SDK will be ready for use once you execute the following configuration metho
 ```swift
 DevRev.configure(appID:)
 ```
+
 Use this property to check whether the DevRev SDK has been configured:
 ```swift
 await DevRev.isConfigured
@@ -107,10 +114,10 @@ For example:
 DevRev.configure(appID: "abcdefg12345")
 ```
 
-#### UIKit apps
+##### UIKit apps
 Configure the SDK in the `AppDelegate.application(_:didFinishLaunchingWithOptions:)` method.
 
-#### SwiftUI apps
+##### SwiftUI apps
 Depending on your app's architecture, configure the SDK at the app's entry point or initial view.
 
 ## Features
@@ -156,15 +163,15 @@ You can update the user's information using the following method:
 DevRev.updateUser(_:)
 ```
 
-Use this property to check whether the user is identified in the current session:
-```swift
-await DevRev.isUserIdentified
-```
-
 The function accepts the `DevRev.Identity` structure.
 
 > [!IMPORTANT]
 > The `userID` property can *not* be updated.
+
+Use this property to check whether the user is identified in the current session:
+```swift
+await DevRev.isUserIdentified
+```
 
 #### Logout
 You can perform a logout of the current user by calling the following method:
@@ -271,13 +278,20 @@ You can further customize the behavior by setting the `shouldDismissModalsOnOpen
 DevRev.shouldDismissModalsOnOpenLink: Bool
 ```
 
+### Dynamic theme configuration
+The DevRev SDK allows you to configure the theme dynamically based on the system appearance, or use the theme configured on the DevRev portal. By default, the theme will be dynamic and follow the system appearance.
+
+```swift
+DevRev.prefersSystemTheme: Bool
+```
+
 ### Analytics
 The DevRev SDK allows you to send custom analytic events by using a name and a string dictionary. You can track these events using the following function:
 ```swift
 DevRev.trackEvent(name:properties:)
 ```
 
-##### Example
+#### Example
 ```swift
 await DevRev.trackEvent(name: "open-message-screen", properties: ["id": "foo-bar-1337"])
 ```
@@ -506,3 +520,6 @@ Before you start using the sample app you will need to configure it to be used w
 
 - **Issue**: Not receiving push notifications.
 	**Solution**: Ensure that your app is configured to receive push notifications and that your device is registered with the DevRev SDK.
+
+## Migration guide
+If you are migrating from the legacy UserExperior SDK to the new DevRev SDK, please refer to the [Migration guide](./MIGRATION.md) for detailed instructions and feature equivalence.

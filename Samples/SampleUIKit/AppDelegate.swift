@@ -72,7 +72,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		do {
 			let center = UNUserNotificationCenter.current()
 			try await center.requestAuthorization(options: [.alert, .sound, .badge])
-		} catch {
+		}
+		catch {
 			print("Could not request authorization for push notifications: \(error)")
 		}
 	}

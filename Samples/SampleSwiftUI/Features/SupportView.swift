@@ -7,7 +7,7 @@ struct SupportView: View {
 
 	@SwiftUI.State var isSupportVisible = false
 	@SwiftUI.State var isUserIdentified = false
-	
+
 	var body: some View {
 		List {
 			Section(header: Text("Status")) {
@@ -42,7 +42,7 @@ struct SupportView: View {
 			await updateStatuses()
 		}
 	}
-	
+
 	private func updateStatuses() async {
 		isUserIdentified = await DevRev.isUserIdentified
 	}

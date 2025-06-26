@@ -5,7 +5,7 @@ import DevRevSDK
 class PushNotificationViewController: UITableViewController {
 	private var items: [ActionableMenuItem] = [
 		.init(title: NSLocalizedString("Register for Push Notifications", comment: "")),
-		.init(title: NSLocalizedString("Unregister from Push Notifications", comment: ""))
+		.init(title: NSLocalizedString("Unregister from Push Notifications", comment: "")),
 	]
 
 	override func viewDidLoad() {

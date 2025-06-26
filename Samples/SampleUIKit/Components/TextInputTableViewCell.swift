@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 class TextInputTableViewCell: UITableViewCell {
-	@IBOutlet private weak var textField: UITextField!
+	@IBOutlet weak var textField: UITextField!
 
 	var text: String? {
 		textField?.text

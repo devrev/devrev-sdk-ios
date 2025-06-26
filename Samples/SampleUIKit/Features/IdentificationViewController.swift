@@ -10,6 +10,8 @@ class IdentificationViewController: UITableViewController {
 		}
 	}
 
+	private var currentUserID: String?
+
 	private var sections = [[MenuItem]]()
 
 	override func viewDidLoad() {
@@ -49,7 +51,7 @@ class IdentificationViewController: UITableViewController {
 				UserStatusMenuItem(
 					title: NSLocalizedString("Is the user identified?", comment: ""),
 					status: isUserIdentified
-				)
+				),
 			],
 			[
 				TextFieldMenuItem(
@@ -58,7 +60,7 @@ class IdentificationViewController: UITableViewController {
 				),
 				ActionableMenuItem(
 					title: NSLocalizedString("Identify User", comment: "")
-				)
+				),
 			],
 			[
 				TextFieldMenuItem(
@@ -71,14 +73,23 @@ class IdentificationViewController: UITableViewController {
 				),
 				ActionableMenuItem(
 					title: NSLocalizedString("Verify User", comment: "")
-				)
+				),
+			],
+			[
+				TextFieldMenuItem(
+					title: NSLocalizedString("Email Input", comment: ""),
+					placeholder: NSLocalizedString("New Email", comment: "")
+				),
+				ActionableMenuItem(
+					title: NSLocalizedString("Update User", comment: "")
+				),
 			],
 			[
 				ActionableMenuItem(
 					title: NSLocalizedString("Logout", comment: ""),
 					style: .destructive
-				)
-			]
+				),
+			],
 		]
 	}
 
@@ -115,6 +126,8 @@ class IdentificationViewController: UITableViewController {
 		case 2:
 			NSLocalizedString("Verified User", comment: "")
 		case 3:
+			NSLocalizedString("Update User", comment: "")
+		case 4:
 			NSLocalizedString("Logout", comment: "")
 		default:
 			nil
@@ -180,7 +193,9 @@ class IdentificationViewController: UITableViewController {
 			identifyUnverifiedUser()
 		case (2, 2):
 			verifyUserWithSession()
-		case (3, 0):
+		case (3, 1):
+			updateUser()
+		case (4, 0):
 			logout()
 		default:
 			break
@@ -198,6 +213,8 @@ class IdentificationViewController: UITableViewController {
 
 		Task {
 			await DevRev.identifyUnverifiedUser(Identity(userID: enteredUserID))
+			currentUserID = enteredUserID
+			await checkUserIdentification()
 			AlertPresenter.show(
 				on: self,
 				title: NSLocalizedString("User Identify", comment: ""),
@@ -227,7 +244,8 @@ class IdentificationViewController: UITableViewController {
 				enteredUserID,
 				sessionToken: enteredSessionToken
 			)
-
+			currentUserID = enteredUserID
+			await checkUserIdentification()
 			AlertPresenter.show(
 				on: self,
 				title: NSLocalizedString("User Identify", comment: ""),
@@ -236,10 +254,47 @@ class IdentificationViewController: UITableViewController {
 		}
 	}
 
+	private func updateUser() {
+		guard
+			let emailCell = tableView.cellForRow(
+				at: IndexPath(row: 0, section: 3)
+			) as? TextInputTableViewCell,
+			let email = emailCell.text,
+			!email.isEmpty,
+			let userID = currentUserID
+		else {
+			AlertPresenter.show(
+				on: self,
+				title: NSLocalizedString("Error", comment: ""),
+				message: NSLocalizedString("Please identify first", comment: "")
+			)
+			return
+		}
+
+		Task {
+			let userTraits = Identity.UserTraits(
+				displayName: nil,
+				email: email,
+				fullName: nil,
+				userDescription: nil,
+				phoneNumbers: nil,
+				customFields: nil
+			)
+
+			await DevRev.updateUser(Identity(userID: userID, userTraits: userTraits))
+			AlertPresenter.show(
+				on: self,
+				title: NSLocalizedString("User Update", comment: ""),
+				message: NSLocalizedString("User updated successfully.", comment: "")
+			)
+		}
+	}
+
 	private func logout() {
 		Task {
 			await DevRev.logout(deviceID: UIDevice.current.identifierForVendor?.uuidString ?? "")
-
+			currentUserID = nil
+			await checkUserIdentification()
 			AlertPresenter.show(
 				on: self,
 				title: NSLocalizedString("Logout", comment: ""),

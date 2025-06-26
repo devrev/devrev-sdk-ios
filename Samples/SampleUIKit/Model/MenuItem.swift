@@ -36,3 +36,7 @@ struct TextFieldMenuItem: MenuItem {
 	let title: String
 	let placeholder: String
 }
+
+struct ManuallyMaskedMenuItem: MenuItem {
+	let title: String
+}

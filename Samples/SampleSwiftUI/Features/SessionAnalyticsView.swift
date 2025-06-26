@@ -48,6 +48,22 @@ struct SessionAnalyticsView: View {
 					await updateStatuses()
 				}
 			}
+			Section(header: Text("Timer")) {
+				AsyncButton(text: "Start Timer") {
+					let property: [String: String] = ["test-key1": "test-value1"]
+					DevRev.startTimer("test-event", properties: property)
+					await updateStatuses()
+				}
+				AsyncButton(text: "Stop Timer") {
+					let property: [String: String] = ["test-key2": "test-value2"]
+					DevRev.endTimer("test-event", properties: property)
+					await updateStatuses()
+				}
+			}
+			Section(header: Text("Manual Masking / Unmasking")) {
+				MaskedLabelView(text: "Manually Masked UI Item")
+				UnmaskedTextFieldView(placeholder: "Manually Unmasked UI Item")
+			}
 			Section(header: Text("On-demand Sessions")) {
 				AsyncButton(text: "Process All On-demand Sessions") {
 					DevRev.processAllOnDemandSessions()
@@ -68,5 +84,34 @@ struct SessionAnalyticsView: View {
 	private func updateStatuses() async {
 		isRecording = DevRev.isRecording
 		isMonitoringEnabled = DevRev.isMonitoringEnabled
+	}
+}
+
+struct MaskedLabelView: UIViewRepresentable {
+	let text: String
+
+	func makeUIView(context: Context) -> UILabel {
+		let label = UILabel()
+		label.text = text
+		return label
+	}
+
+	func updateUIView(_ uiView: UILabel, context: Context) {
+		uiView.text = text
+		DevRev.markSensitiveViews([uiView])
+	}
+}
+
+struct UnmaskedTextFieldView: UIViewRepresentable {
+	let placeholder: String
+
+	func makeUIView(context: Context) -> UITextField {
+		let textField = UITextField()
+		textField.placeholder = placeholder
+		return textField
+	}
+
+	func updateUIView(_ uiView: UITextField, context: Context) {
+		DevRev.unmarkSensitiveViews([uiView])
 	}
 }

@@ -46,7 +46,7 @@ class SupportViewController: UITableViewController {
 				UserStatusMenuItem(
 					title: NSLocalizedString("Is the user identified?", comment: ""),
 					status: isUserIdentified
-				)
+				),
 			],
 			[
 				ActionableMenuItem(
@@ -54,8 +54,8 @@ class SupportViewController: UITableViewController {
 				),
 				ActionableMenuItem(
 					title: NSLocalizedString("Support View", comment: "")
-				)
-			]
+				),
+			],
 		]
 	}
 
@@ -112,7 +112,7 @@ class SupportViewController: UITableViewController {
 
 			return cell
 		case let actionableItem as ActionableMenuItem:
-			let cell =  UITableViewCell.dequeue(
+			let cell = UITableViewCell.dequeue(
 				from: tableView,
 				at: indexPath,
 				reuseIdentifier: Constants.CellIdentifier.support
@@ -141,8 +141,7 @@ class SupportViewController: UITableViewController {
 		}
 	}
 
-	private func createSupportConversation()
-	{
+	private func createSupportConversation() {
 		Task {
 			guard
 				await DevRev.isUserIdentified
@@ -166,4 +165,3 @@ class SupportViewController: UITableViewController {
 		}
 	}
 }
-

@@ -51,13 +51,13 @@ class HomeViewController: UITableViewController {
 				ActionableMenuItem(
 					title: NSLocalizedString("Session Analytics", comment: ""),
 					destination: SessionAnalyticsViewController.self
-				)
+				),
 			],
 			[
 				ActionableMenuItem(
 					title: NSLocalizedString("Force a crash", comment: ""),
 					style: .destructive
-				)
+				),
 			],
 		]
 	}
@@ -122,6 +122,8 @@ class HomeViewController: UITableViewController {
 			NSLocalizedString("Features", comment: "")
 		case 2:
 			NSLocalizedString("Debug", comment: "")
+		case 3:
+			NSLocalizedString("Animation", comment: "")
 		default:
 			nil
 		}

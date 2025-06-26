@@ -37,7 +37,12 @@ class SessionAnalyticsViewController: UITableViewController {
 			UINib(nibName: "StatusTableViewCell", bundle: nil),
 			forCellReuseIdentifier: Constants.CellIdentifier.status
 		)
+		tableView.register(
+			UINib(nibName: "TextInputTableViewCell", bundle: nil),
+			forCellReuseIdentifier: Constants.CellIdentifier.textField
+		)
 
+		DevRev.addSessionProperties( ["test_user_id": "test_001"])
 		tableView.reloadData()
 	}
 
@@ -51,7 +56,7 @@ class SessionAnalyticsViewController: UITableViewController {
 				UserStatusMenuItem(
 					title: NSLocalizedString("Is the session recorded?", comment: ""),
 					status: isRecording
-				)
+				),
 			],
 			[
 				ActionableMenuItem(
@@ -59,7 +64,7 @@ class SessionAnalyticsViewController: UITableViewController {
 				),
 				ActionableMenuItem(
 					title: NSLocalizedString("Resume All Monitoring", comment: "")
-				)
+				),
 			],
 			[
 				ActionableMenuItem(
@@ -77,9 +82,26 @@ class SessionAnalyticsViewController: UITableViewController {
 			],
 			[
 				ActionableMenuItem(
+					title: NSLocalizedString("Start Timer", comment: "")
+				),
+				ActionableMenuItem(
+					title: NSLocalizedString("End Timer", comment: "")
+				),
+			],
+			[
+				ManuallyMaskedMenuItem(
+					title: NSLocalizedString("Manually Masked UI Item", comment: "")
+				),
+				TextFieldMenuItem(
+					title: NSLocalizedString("Manually Unmasked UI Item", comment: ""),
+					placeholder: NSLocalizedString("Manuallly Unmasked UI Item", comment: "")
+				),
+			],
+			[
+				ActionableMenuItem(
 					title: NSLocalizedString("Process All Demand Sessions", comment: "")
-				)
-			]
+				),
+			],
 		]
 	}
 
@@ -112,6 +134,10 @@ class SessionAnalyticsViewController: UITableViewController {
 		case 2:
 			NSLocalizedString("Session Recording", comment: "")
 		case 3:
+			NSLocalizedString("Timer", comment: "")
+		case 4:
+			NSLocalizedString("Manual Masking / Unmasking", comment: "")
+		case 5:
 			NSLocalizedString("On-demand Sessions", comment: "")
 		default:
 			nil
@@ -142,7 +168,26 @@ class SessionAnalyticsViewController: UITableViewController {
 				reuseIdentifier: Constants.CellIdentifier.sessionAnalytics
 			)
 			cell.textLabel?.text = actionableItem.title
-
+			return cell
+		case let maskedItem as ManuallyMaskedMenuItem:
+			let cell = UITableViewCell.dequeue(
+				from: tableView,
+				at: indexPath,
+				reuseIdentifier: Constants.CellIdentifier.sessionAnalytics
+			)
+			cell.textLabel?.text = maskedItem.title
+			DevRev.markSensitiveViews([cell])
+			cell.selectionStyle = .none
+			return cell
+		case let textFieldItem as TextFieldMenuItem:
+			let cell = TextInputTableViewCell.dequeue(
+				from: tableView,
+				at: indexPath,
+				reuseIdentifier: Constants.CellIdentifier.textField
+			)
+			cell.configure(with: textFieldItem.placeholder)
+			DevRev.unmarkSensitiveViews([cell.textField])
+			cell.selectionStyle = .none
 			return cell
 		default:
 			return UITableViewCell()
@@ -154,6 +199,7 @@ class SessionAnalyticsViewController: UITableViewController {
 		updateRecordingStatusRow()
 	}
 
+	// swiftlint:disable function_body_length
 	override func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
@@ -234,6 +280,22 @@ class SessionAnalyticsViewController: UITableViewController {
 					)
 				)
 			case (3, 0):
+				let property: [String: String] = ["test-key1": "test-value1"]
+				DevRev.startTimer("test-event", properties: property)
+				AlertPresenter.show(
+					on: self,
+					title: NSLocalizedString("Timer Started", comment: ""),
+					message: NSLocalizedString("Timer with session property started.", comment: "")
+				)
+			case (3, 1):
+				let property: [String: String] = ["test-key2": "test-value2"]
+				DevRev.endTimer("test-event", properties: property)
+				AlertPresenter.show(
+					on: self,
+					title: NSLocalizedString("Timer Ended", comment: ""),
+					message: NSLocalizedString("Timer with session property stopped.", comment: "")
+				)
+			case (5, 0):
 				DevRev.processAllOnDemandSessions()
 				AlertPresenter.show(
 					on: self,
@@ -248,6 +310,7 @@ class SessionAnalyticsViewController: UITableViewController {
 			}
 		}
 	}
+	// swiftlint:enable function_body_length
 
 	private func updateRecordingStatusRow() {
 		self.areOnDemandSessionsEnabled = DevRev.areOnDemandSessionsEnabled

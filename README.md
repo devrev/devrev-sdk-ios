@@ -17,9 +17,17 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 			- [Anonymous identification](#anonymous-identification)
 			- [Unverified identification](#unverified-identification)
 			- [Verified identification](#verified-identification)
+				- [Generate an AAT](#generate-an-aat)
+				- [Exchange your AAT for a session token](#exchange-your-aat-for-a-session-token)
+				- [Identifying the verified user](#identifying-the-verified-user)
 			- [Updating the user](#updating-the-user)
 			- [Logout](#logout)
 			- [Examples](#examples)
+			- [Identity model](#identity-model)
+				- [Properties](#properties)
+					- [UserTraits](#usertraits)
+					- [OrganizationTraits](#organizationtraits)
+					- [AccountTraits](#accounttraits)
 		- [PLuG support chat](#plug-support-chat)
 			- [UIKit](#uikit)
 				- [Examples](#examples-1)
@@ -36,37 +44,37 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 			- [Session recording](#session-recording)
 			- [Session properties](#session-properties)
 			- [Masking sensitive data](#masking-sensitive-data)
-			- [Timers](#timers)
+			- [Custom masking provider](#custom-masking-provider)
 				- [Example](#example-2)
-			- [Screen tracking](#screen-tracking)
+			- [Timers](#timers)
 				- [Example](#example-3)
+			- [Screen tracking](#screen-tracking)
+				- [Example](#example-4)
 		- [Push notifications](#push-notifications)
 			- [Configuration](#configuration)
 			- [Register for push notifications](#register-for-push-notifications)
-				- [Example](#example-4)
-			- [Unregister from push notifications](#unregister-from-push-notifications)
 				- [Example](#example-5)
-			- [Handle push notifications](#handle-push-notifications)
+			- [Unregister from push notifications](#unregister-from-push-notifications)
 				- [Example](#example-6)
+			- [Handle push notifications](#handle-push-notifications)
+				- [Example](#example-7)
 	- [Sample app](#sample-app)
 	- [Troubleshooting](#troubleshooting)
 	- [Migration guide](#migration-guide)
 
 ## Quickstart
 ### Requirements
-- Xcode 16.0 or higher (latest stable version available on the App Store)
-- Swift 5.9 or later
-- Set the minimum deployment target for your iOS application as iOS 15
+- Xcode 16.0 or later (latest stable version available on the App Store).
+- Swift 5.9 or later.
+- Set the minimum deployment target for your iOS application as iOS 15.
 
 ### Integration
-
 The DevRev SDK can be integrated using either Swift Package Manager (SPM) or CocoaPods.
 
 > [!CAUTION]
 > We recommend integrating the DevRev SDK using Swift Package Manager. CocoaPods is in [maintenance mode](https://blog.cocoapods.org/CocoaPods-Support-Plans/) since August 2024 and will be [deprecated in the future](https://blog.cocoapods.org/CocoaPods-Specs-Repo/).
 
 #### Swift Package Manager (Recommended)
-
 You can integrate the DevRev SDK in your project as a Swift Package Manager (SPM) package.
 
 To integrate the DevRev SDK into your project using SPM:
@@ -80,7 +88,6 @@ To integrate the DevRev SDK into your project using SPM:
 Now you should be able to import and use the DevRev SDK in your project.
 
 #### CocoaPods
-
 To integrate the DevRev SDK using CocoaPods:
 
 1. Add the following to your `Podfile`:
@@ -93,7 +100,6 @@ To integrate the DevRev SDK using CocoaPods:
 This will install the DevRev SDK in your project, making it ready for use.
 
 ### Set up the DevRev SDK
-
 1. Open the DevRev web app at [https://app.devrev.ai](https://app.devrev.ai) and go to the **Settings** page.
 2. Under **PLuG settings** copy the value under **Your unique App ID**.
 3. After obtaining the credentials, you can configure the DevRev SDK in your app.
@@ -126,7 +132,6 @@ To access certain features of the DevRev SDK, user identification is required.
 
 The identification function should be placed appropriately in your app after the user logs in. If you have the user information available at app launch, call the function after the `DevRev.configure(appID:)` method.
 
-
 > [!IMPORTANT]
 > If you haven't previously identified the user, the DevRev SDK will automatically create an anonymous user for you immediately after the SDK is configured.
 
@@ -150,8 +155,50 @@ DevRev.identifyUnverifiedUser(_:)
 The function accepts the `DevRev.Identity` structure, with the user identifier (`userID`) as the only required property, all other properties are optional.
 
 #### Verified identification
-The verified identification method is used to identify the user with a unique identifier and verify the user's identity with the DevRev backend.
+The verified identification method is used to identify users with an identifier unique to your system within the DevRev platform. The verification is done through a token exchange process between you and the DevRev backend.
 
+The steps to identify a verified user are as follows:
+1. Generate an AAT for your system (preferably through your backend).
+2. Exchange your AAT for a session token for each user of your system.
+3. Pass the user identifier and the exchanged session token to the `DevRev.identifyVerifiedUser(_:sessionToken:)` method.
+
+> [!CAUTION]
+> For security reasons we **strongly recommend** that the token exchange is executed on your backend to prevent exposing your application access token (AAT).
+
+##### Generate an AAT
+1. Open the DevRev web app at [https://app.devrev.ai](https://app.devrev.ai) and go to the **Settings** page.
+2. Open the **PLuG Tokens** page.
+3. Under the **Application access tokens** panel, click **New token** and copy the token that's displayed.
+
+> [!IMPORTANT]
+> Ensure that you copy the generated application access token, as you cannot view it again.
+
+##### Exchange your AAT for a session token
+In order to proceed with identifying the user, you need to exchange your AAT for a session token. This step will help you identify a user of your own system within the DevRev platform.
+
+Here is a simple example of an API request to the DevRev backend to exchange your AAT for a session token:
+> [!CAUTION]
+> Make sure that you replace the `<AAT>` and `<YOUR_USER_ID>` with the actual values.
+```bash
+curl \
+--location 'https://api.devrev.ai/auth-tokens.create' \
+--header 'accept: application/json, text/plain, */*' \
+--header 'content-type: application/json' \
+--header 'authorization: <AAT>' \
+--data '{
+  "rev_info": {
+    "user_ref": "<YOUR_USER_ID>"
+  }
+}'
+```
+
+The response of the API call will contain a session token that you can use with the verified identification method in your app.
+
+> [!NOTE]
+> As a good practice, **your** app should retrieve the exchanged session token from **your** backend at app launch or any relevant app lifecycle event.
+
+##### Identifying the verified user
+Pass the user identifier and the exchanged session token to the verified identification method:
 ```swift
 DevRev.identifyVerifiedUser(_:sessionToken:)
 ```
@@ -199,6 +246,70 @@ await DevRev.identifyVerifiedUser("foo@example.org", sessionToken: "bar-1337")
 // Update the user's information.
 await DevRev.updateUser(Identity(organizationID: "foo-bar-1337"))
 ```
+
+#### Identity model
+The `Identity` class is used to provide user, organization, and account information when identifying users or updating their details. This class is used primarily with the `identifyUnverifiedUser(_:)` and `updateUser(_:)` methods.
+
+##### Properties
+The `Identity` class contains the following properties:
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `userID` | `String` | ✅ | A unique identifier for the user |
+| `organizationID` | `String?` | ❌ | An identifier for the user's organization |
+| `accountID` | `String?` | ❌ | An identifier for the user's account |
+| `userTraits` | `UserTraits?` | ❌ | Additional information about the user |
+| `organizationTraits` | `OrganizationTraits?` | ❌ | Additional information about the organization |
+| `accountTraits` | `AccountTraits?` | ❌ | Additional information about the account |
+
+> [!NOTE]
+> The custom fields properties defined as part of the user, organization and account traits, must be configured in the DevRev web app **before** they can be used. See [Object customization](https://devrev.ai/docs/product/object-customization) for more information.
+
+###### UserTraits
+The `UserTraits` class contains detailed information about the user:
+
+> [!NOTE]
+> All properties in `UserTraits` are optional.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `displayName` | `String?` | The displayed name of the user |
+| `email` | `String?` | The user's email address |
+| `fullName` | `String?` | The user's full name |
+| `userDescription` | `String?` | A description of the user |
+| `phoneNumbers` | `[String]?` | Array of the user's phone numbers |
+| `customFields` | `[String: Any]?` | Dictionary of custom fields configured in DevRev |
+
+###### OrganizationTraits
+The `OrganizationTraits` class contains detailed information about the organization:
+
+> [!NOTE]
+> All properties in `OrganizationTraits` are optional.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `displayName` | `String?` | The displayed name of the organization |
+| `domain` | `String?` | The organization's domain |
+| `organizationDescription` | `String?` | A description of the organization |
+| `phoneNumbers` | `[String]?` | Array of the organization's phone numbers |
+| `tier` | `String?` | The organization's tier or plan level |
+| `customFields` | `[String: Any]?` | Dictionary of custom fields configured in DevRev |
+
+###### AccountTraits
+The `AccountTraits` class contains detailed information about the account:
+
+> [!NOTE]
+> All properties in `AccountTraits` are optional.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `displayName` | `String?` | The displayed name of the account |
+| `domains` | `[String]?` | Array of domains associated with the account |
+| `accountDescription` | `String?` | A description of the account |
+| `phoneNumbers` | `[String]?` | Array of the account's phone numbers |
+| `websites` | `[String]?` | Array of websites associated with the account |
+| `tier` | `String?` | The account's tier or plan level |
+| `customFields` | `[String: Any]?` | Dictionary of custom fields configured in DevRev |
 
 ### PLuG support chat
 #### UIKit
@@ -368,6 +479,40 @@ If any previously masked views need to be unmasked, you can use the following me
 ```swift
 DevRev.unmarkSensitiveViews(_:)
 ```
+
+#### Custom masking provider
+For advanced use cases, you can provide a custom masking provider to specify exactly which regions of the UI should be masked in snapshots.
+
+You can implement your own masking logic by conforming to the `DevRev.MaskLocationProviding` protocol and setting your custom object as the masking provider. This allows you to specify explicit regions to be masked or to skip snapshots entirely.
+
+- `DevRev.setMaskingLocationProvider(_ provider: DevRev.MaskLocationProviding)`: Sets the external view masking provider used to determine which areas of the UI should be masked for privacy during snapshots. The provider must conform to the `DevRev.MaskLocationProviding` protocol.
+- `DevRev.MaskLocationProviding`: Protocol for providing explicit masking locations for UI snapshots.
+- `DevRev.SnapshotMask`: Describes the regions of a snapshot to be masked.
+- `DevRev.SnapshotMask.Location`: Describes a masked region.
+
+##### Example
+```swift
+import Foundation
+import UIKit
+import DevRevSDK
+
+class MyMaskingProvider: NSObject, DevRev.MaskLocationProviding {
+    func provideSnapshotMask(_ completionHandler: @escaping (DevRev.SnapshotMask) -> Void) {
+        // Example: Mask a specific region
+        let region = CGRect(x: 10, y: 10, width: 100, height: 40)
+        let location = DevRev.SnapshotMask.Location(location: region)
+        let mask = DevRev.SnapshotMask(locations: [location], shouldSkip: false)
+        completionHandler(mask)
+    }
+}
+```
+
+```swift
+DevRev.setMaskingLocationProvider(MyMaskingProvider())
+```
+
+> [!NOTE]
+> Setting a new provider will override any previously set masking location provider.
 
 #### Timers
 The DevRev SDK offers a timer mechanism to measure the time spent on specific tasks, allowing you to track events such as response time, loading time, or any other duration-based metrics.

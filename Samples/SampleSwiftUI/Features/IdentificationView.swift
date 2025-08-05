@@ -21,8 +21,8 @@ struct IdentificationView: View {
 			}
 			Section(header: Text("Unverified User")) {
 				TextField("User ID", text: $unverifiedUserID)
-						.autocorrectionDisabled()
-						.autocapitalization(.none)
+					.autocorrectionDisabled()
+					.autocapitalization(.none)
 
 				AsyncButton(text: "Identify the Unverified User") {
 					await DevRev.identifyUnverifiedUser(
@@ -33,12 +33,12 @@ struct IdentificationView: View {
 			}
 			Section(header: Text("Verified User")) {
 				TextField("User ID", text: $verifiedUserID)
-						.autocorrectionDisabled()
-						.autocapitalization(.none)
+					.autocorrectionDisabled()
+					.autocapitalization(.none)
 
 				TextField("Session Token", text: $verifiedSessionToken)
-						.autocorrectionDisabled()
-						.autocapitalization(.none)
+					.autocorrectionDisabled()
+					.autocapitalization(.none)
 
 				AsyncButton(text: "Identify the Unverified User") {
 					await DevRev.identifyVerifiedUser(
@@ -50,9 +50,9 @@ struct IdentificationView: View {
 			}
 			Section(header: Text("Update User")) {
 				TextField("New Email", text: $email)
-						.autocorrectionDisabled()
-						.autocapitalization(.none)
-						.keyboardType(.emailAddress)
+					.autocorrectionDisabled()
+					.autocapitalization(.none)
+					.keyboardType(.emailAddress)
 
 				AsyncButton(text: "Update the User") {
 					await updateUser()

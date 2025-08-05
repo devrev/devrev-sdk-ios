@@ -14,28 +14,16 @@ struct AsyncButton<Label: View>: View {
 		Button(
 			role: role,
 			action: {
-				if actionOptions
-					.contains(
-						.disableButton
-					) {
+				if actionOptions.contains(.disableButton) {
 					isDisabled = true
 				}
 
 				Task {
-					var progressViewTask: Task<
-						Void,
-						Error
-					>?
+					var progressViewTask: Task<Void, Error>?
 
-					if actionOptions
-						.contains(
-							.showProgressView
-						) {
+					if actionOptions.contains(.showProgressView) {
 						progressViewTask = Task {
-							try await Task
-								.sleep(
-									nanoseconds: 150_000_000
-								)
+							try await Task.sleep(nanoseconds: 150_000_000)
 							showProgressView = true
 						}
 					}
@@ -74,9 +62,7 @@ extension AsyncButton where Label == Text {
 	init(
 		text: String,
 		role: ButtonRole? = nil,
-		actionOptions: Set<ActionOption> = Set(
-			ActionOption.allCases
-		),
+		actionOptions: Set<ActionOption> = .init(ActionOption.allCases),
 		action: @escaping () async -> Void
 	) {
 		self.init(
@@ -93,9 +79,7 @@ extension AsyncButton where Label == Text {
 extension AsyncButton where Label == Image {
 	init(
 		systemImageName: String,
-		actionOptions: Set<ActionOption> = Set(
-			ActionOption.allCases
-		),
+		actionOptions: Set<ActionOption> = .init(ActionOption.allCases),
 		action: @escaping () async -> Void
 	) {
 		self.init(

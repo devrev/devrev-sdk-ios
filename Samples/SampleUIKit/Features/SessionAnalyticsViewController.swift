@@ -102,6 +102,18 @@ class SessionAnalyticsViewController: UITableViewController {
 					title: NSLocalizedString("Process All Demand Sessions", comment: "")
 				),
 			],
+			[
+				ActionableMenuItem(
+					title: NSLocalizedString("Open Web View", comment: ""),
+					destination: MaskedWebViewViewController.self
+				),
+			],
+			[
+				ActionableMenuItem(
+					title: NSLocalizedString("Open Large Scrollable Table", comment: ""),
+					destination: TableViewViewController.self
+				),
+			],
 		]
 	}
 
@@ -139,6 +151,10 @@ class SessionAnalyticsViewController: UITableViewController {
 			NSLocalizedString("Manual Masking / Unmasking", comment: "")
 		case 5:
 			NSLocalizedString("On-demand Sessions", comment: "")
+		case 6:
+			NSLocalizedString("Web View", comment: "")
+		case 7:
+			NSLocalizedString("Large Scrollable Table", comment: "")
 		default:
 			nil
 		}
@@ -168,6 +184,7 @@ class SessionAnalyticsViewController: UITableViewController {
 				reuseIdentifier: Constants.CellIdentifier.sessionAnalytics
 			)
 			cell.textLabel?.text = actionableItem.title
+			cell.accessoryType = actionableItem.destination != nil ? .disclosureIndicator : .none
 			return cell
 		case let maskedItem as ManuallyMaskedMenuItem:
 			let cell = UITableViewCell.dequeue(
@@ -309,6 +326,16 @@ class SessionAnalyticsViewController: UITableViewController {
 				break
 			}
 		}
+
+		let item = sessionItems[indexPath.section][indexPath.row]
+		guard
+			let destinationViewController = (item as? ActionableMenuItem)?.destination
+		else {
+			return
+		}
+
+		let viewController = destinationViewController.init()
+		navigationController?.pushViewController(viewController, animated: true)
 	}
 	// swiftlint:enable function_body_length
 

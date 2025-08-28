@@ -7,6 +7,7 @@ struct SessionAnalyticsView: View {
 
 	@SwiftUI.State private var isMonitoringEnabled = false
 	@SwiftUI.State private var isRecording = false
+	@SwiftUI.State private var isWebViewPresented = false
 
 	var body: some View {
 		List {
@@ -68,6 +69,19 @@ struct SessionAnalyticsView: View {
 				AsyncButton(text: "Process All On-demand Sessions") {
 					DevRev.processAllOnDemandSessions()
 					await updateStatuses()
+				}
+			}
+			Section(header: Text("Web View")) {
+				AsyncButton(text: "Open Web View") {
+					isWebViewPresented = true
+				}
+				.sheet(isPresented: $isWebViewPresented) {
+					MaskedWebView()
+				}
+			}
+			Section(header: Text("Large Scrollable List")) {
+				NavigationLink(destination: ListViewScreen()) {
+					Text("Open Large Scrollable List")
 				}
 			}
 		}

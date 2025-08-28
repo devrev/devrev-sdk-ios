@@ -174,13 +174,21 @@ class HomeViewController: UITableViewController {
 		}
 
 		let menuItem = items[indexPath.section][indexPath.row]
+		let viewController: UIViewController
+
 		guard
 			let destinationViewController = (menuItem as? ActionableMenuItem)?.destination
 		else {
 			return
 		}
 
-		let viewController = destinationViewController.init(style: .insetGrouped)
+		switch destinationViewController {
+		case let tableViewController as UITableViewController.Type:
+			viewController = tableViewController.init(style: .insetGrouped)
+		default:
+			viewController = destinationViewController.init()
+		}
+
 		navigationController?.pushViewController(viewController, animated: true)
 	}
 

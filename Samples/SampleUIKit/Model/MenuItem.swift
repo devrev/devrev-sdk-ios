@@ -13,12 +13,12 @@ enum MenuItemStyle {
 
 struct ActionableMenuItem: MenuItem {
 	let title: String
-	let destination: UITableViewController.Type?
+	let destination: UIViewController.Type?
 	let style: MenuItemStyle
 
 	init(
 		title: String,
-		destination: UITableViewController.Type? = nil,
+		destination: UIViewController.Type? = nil,
 		style: MenuItemStyle = .normal
 	) {
 		self.title = title

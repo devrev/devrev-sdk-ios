@@ -1,8 +1,12 @@
 import Foundation
 import UIKit
+import UserNotifications
 import DevRevSDK
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+class AppDelegate:
+	NSObject,
+	UIApplicationDelegate,
+	UNUserNotificationCenterDelegate {
 	// MARK: - Configuration
 
 	#error("The sample app needs a development team set for code signing.")
@@ -12,6 +16,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 	// MARK: - Properties
 
 	let testOrganizer = UITestOrganizer()
+	private let userNotificationCenter = UNUserNotificationCenter.current()
 
 	// MARK: - App lifecycle
 
@@ -19,6 +24,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		_ application: UIApplication,
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
 	) -> Bool {
+		userNotificationCenter.delegate = self
+
 		guard
 			let	appID = testOrganizer.isInTestMode ? testOrganizer.appID : appID
 		else {
@@ -56,11 +63,19 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 	private func requestPushNotificationsAuthorization() async {
 		do {
-			let center = UNUserNotificationCenter.current()
-			try await center.requestAuthorization(options: [.alert, .sound, .badge])
+			try await userNotificationCenter.requestAuthorization(options: [.alert, .sound, .badge])
 		}
 		catch {
 			print("Could not request authorization for push notifications: \(error)")
 		}
+	}
+
+	// MARK: - User notification center delegate
+
+	func userNotificationCenter(
+		_ center: UNUserNotificationCenter,
+		didReceive response: UNNotificationResponse
+	) async {
+		await DevRev.processPushNotification(response.notification.request.content.userInfo)
 	}
 }

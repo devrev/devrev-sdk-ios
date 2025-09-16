@@ -538,13 +538,12 @@ import UIKit
 import DevRevSDK
 
 class MyMaskingProvider: NSObject, DevRev.MaskLocationProviding {
-    func provideSnapshotMask(_ completionHandler: @escaping (DevRev.SnapshotMask) -> Void) {
-        // Example: Mask a specific region
+	func provideSnapshotMask() async -> DevRev.SnapshotMask {
         let region = CGRect(x: 10, y: 10, width: 100, height: 40)
         let location = DevRev.SnapshotMask.Location(location: region)
         let mask = DevRev.SnapshotMask(locations: [location], shouldSkip: false)
-        completionHandler(mask)
-    }
+		return mask
+	}
 }
 ```
 

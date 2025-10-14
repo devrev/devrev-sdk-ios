@@ -5,10 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.3] - 2025-10-13
+
+### Added
+- Added the ability to pause and resume user interaction event tracking, offering more security on the confidential screens.
+  
+### Changed
+- Improved performance and modularity by decoupling the screen recording functionality from the main tracking flow. 
+
+### Fixed
+- Corrected incorrect or missing device model names on certain iPhone versions.
+- Fixed visual distortion issues when zooming inside web view.
+
 ## [2.2.2] - 2025-09-16
 
 ### Changed
-- Improved minor stability of SDK infrastructure.
+- Improved the infrastructure for custom masking.
 
 ## [2.2.1] - 2025-08-28
 

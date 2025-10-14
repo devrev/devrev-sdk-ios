@@ -79,6 +79,12 @@ class SessionAnalyticsViewController: UITableViewController {
 				ActionableMenuItem(
 					title: NSLocalizedString("Resume Recording", comment: "")
 				),
+				ActionableMenuItem(
+					title: NSLocalizedString("Pause User Interaction Tracking", comment: "")
+				),
+				ActionableMenuItem(
+					title: NSLocalizedString("Resume User Interaction Tracking", comment: "")
+				),
 			],
 			[
 				ActionableMenuItem(
@@ -229,6 +235,7 @@ class SessionAnalyticsViewController: UITableViewController {
 			return
 		}
 
+		// swiftlint:disable closure_body_length
 		Task {
 			switch (indexPath.section, indexPath.row) {
 			case (1, 0):
@@ -296,6 +303,26 @@ class SessionAnalyticsViewController: UITableViewController {
 						comment: ""
 					)
 				)
+			case (2, 4):
+				DevRev.pauseUserInteractionTracking()
+				AlertPresenter.show(
+					on: self,
+					title: NSLocalizedString("User Interaction Tracking Paused", comment: ""),
+					message: NSLocalizedString(
+						"User interaction tracking has paused.",
+						comment: ""
+					)
+				)
+			case (2, 5):
+				DevRev.resumeUserInteractionTracking()
+				AlertPresenter.show(
+					on: self,
+					title: NSLocalizedString("User Interaction Tracking Resumed", comment: ""),
+					message: NSLocalizedString(
+						"User interaction tracking has resumed.",
+						comment: ""
+					)
+				)
 			case (3, 0):
 				let property: [String: String] = ["test-key1": "test-value1"]
 				DevRev.startTimer("test-event", properties: property)
@@ -326,6 +353,7 @@ class SessionAnalyticsViewController: UITableViewController {
 				break
 			}
 		}
+		// swiftlint:enable closure_body_length
 
 		let item = sessionItems[indexPath.section][indexPath.row]
 		guard

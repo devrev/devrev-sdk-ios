@@ -37,6 +37,7 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 			- [Session properties](#session-properties)
 			- [Masking sensitive data](#masking-sensitive-data)
 			- [Custom masking provider](#custom-masking-provider)
+			- [User interaction tracking](#user-interaction-tracking)
 			- [Timers](#timers)
 			- [Track screens](#track-screens)
 		- [Push notifications](#push-notifications)
@@ -553,6 +554,21 @@ DevRev.setMaskingLocationProvider(MyMaskingProvider())
 
 > [!TIP]
 > Setting a new provider overrides any previously set masking location provider.
+
+#### User interaction tracking
+
+The DevRev SDK automatically tracks user interactions such as taps, swipes, and scrolls. However, in some cases you may want to disable this tracking to prevent sensitive user actions from being recorded.
+
+To **temporarily disable** user interaction tracking, use the following method:
+
+```swift
+DevRev.pauseUserInteractionTracking()
+```
+
+To **resume** user interaction tracking, use the following method:
+```swift
+DevRev.resumeUserInteractionTracking()
+```
 
 #### Timers
 

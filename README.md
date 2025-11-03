@@ -10,7 +10,6 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 		- [Set up the DevRev SDK](#set-up-the-devrev-sdk)
 	- [Features](#features)
 		- [Identification](#identification)
-			- [Identify an anonymous user](#identify-an-anonymous-user)
 			- [Identify an unverified user](#identify-an-unverified-user)
 			- [Identify a verified user](#identify-a-verified-user)
 				- [Generate an AAT](#generate-an-aat)
@@ -132,14 +131,6 @@ The identification function should be placed appropriately in your app after the
 
 You can select from the following methods to identify users within your application:
 
-#### Identify an anonymous user
-
-The anonymous identification method allows you to create an anonymous user with an optional user identifier, ensuring that no other data is stored or associated with the user.
-
-```swift
-DevRev.identifyAnonymousUser(userID:)
-```
-
 #### Identify an unverified user
 
 The unverified identification method identifies users with a unique identifier, but it does not verify their identity with the DevRev backend.
@@ -241,9 +232,6 @@ The user is logged out by clearing their credentials, as well as unregistering t
 For example:
 
 ```swift
-// Identify an anonymous user without a user identifier.
-await DevRev.identifyAnonymousUser()
-
 // Identify an unverified user using their email address as the user identifier.
 await DevRev.identifyUnverifiedUser(Identity(userID: "user@example.org"))
 
@@ -627,7 +615,7 @@ You need to ensure that your iOS app is configured to receive push notifications
 #### Register for push notifications
 
 > [!TIP]
-> Push notifications require that the SDK has been configured and the user has been identified (unverified and anonymous users). The user identification is required to send the push notification to the correct user.
+> Push notifications require that the SDK has been configured and the user has been identified (unverified and verified users). The user identification is required to send the push notification to the correct user.
 
 The DevRev SDK offers a method to register your device for receiving push notifications. You can register for push notifications using the following method:
 
@@ -733,7 +721,7 @@ Before you start using the sample app you will need to configure it to be used w
 	**Solution**: The DevRev SDK reports all errors in the console using Apple's Unified Logging System. Look for error messages in the subsystem `ai.devrev.sdk`.
 
 - **Issue**: Support chat doesn't show.
-	**Solution**: Ensure you have correctly called one of the identification methods: `DevRev.identifyUnverifiedUser(...)` or `DevRev.identifyAnonymousUser(...)`.
+	**Solution**: Ensure you have correctly called one of the identification methods: `DevRev.identifyUnverifiedUser(...)` or `DevRev.identifyVerifiedUser(...)`.
 
 - **Issue**: Not receiving push notifications.
 	**Solution**: Ensure that your app is configured to receive push notifications and that your device is registered with the DevRev SDK.

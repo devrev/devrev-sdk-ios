@@ -38,6 +38,7 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 			- [Custom masking provider](#custom-masking-provider)
 			- [User interaction tracking](#user-interaction-tracking)
 			- [Timers](#timers)
+			- [Capture errors](#capture-errors)
 			- [Track screens](#track-screens)
 		- [Push notifications](#push-notifications)
 			- [Configuration](#configuration)
@@ -584,6 +585,32 @@ DevRev.startTimer("response-time", properties: ["id": "task-1337"])
 // Perform the task that you want to measure.
 
 DevRev.endTimer("response-time", properties: ["id": "task-1337"])
+```
+
+#### Capture errors
+
+You can report a handled error from a catch block using the `captureError` function.
+
+This ensures that even if the error is handled in your app, it will still be logged for diagnostics.
+
+```swift
+DevRev.captureError(
+    _ error: Error,
+    tag: String
+)
+```
+
+**Example:**
+
+```swift
+do {
+    try someFunction()
+} catch {
+    DevRev.captureError(
+        error,
+        tag: "network-failure"
+    )
+}
 ```
 
 #### Track screens

@@ -8,6 +8,9 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 			- [Swift Package Manager (Recommended)](#swift-package-manager-recommended)
 			- [CocoaPods](#cocoapods)
 		- [Set up the DevRev SDK](#set-up-the-devrev-sdk)
+			- [Update the feature configuration](#update-the-feature-configuration)
+			- [Feature configuration reference](#feature-configuration-reference)
+				- [Support widget theme options](#support-widget-theme-options)
 	- [Features](#features)
 		- [Identification](#identification)
 			- [Identify an unverified user](#identify-an-unverified-user)
@@ -97,16 +100,105 @@ This will install the DevRev SDK in your project, making it ready for use.
 > [!CAUTION]
 > The DevRev SDK must be configured before you can use any of its features.
 
-The SDK becomes ready for use once the following configuration method is executed.
+The SDK becomes ready for use once the configuration API is executed.
+
 ```swift
 DevRev.configure(appID:)
 ```
 
-For example:
+To provide a feature configuration during setup, call the overload that accepts it:
+
+```swift
+DevRev.configure(appID:featureConfiguration:)
+```
+
+For default behavior, call the simpler overload:
 
 ```swift
 DevRev.configure(appID: "abcdefg12345")
 ```
+
+To customize behavior such as frame capture, auto-start recording, or theme preferences, pass a `FeatureConfiguration` instance:
+
+```swift
+DevRev.configure(
+	appID: "abcdefg12345",
+	featureConfiguration: FeatureConfiguration(
+		enableFrameCapture: false,
+		autoStartRecording: false,
+		supportWidgetTheme: .systemDefault
+	)
+)
+```
+
+#### Update the feature configuration
+
+You can adjust the feature configuration without reconfiguring the SDK:
+
+```swift
+DevRev.updateFeatureConfiguration(
+	FeatureConfiguration(
+		enableFrameCapture: true,
+		autoStartRecording: true,
+		supportWidgetTheme: .systemDefault
+	)
+)
+```
+
+#### Feature configuration reference
+
+`FeatureConfiguration` controls how the SDK behaves both during initial setup and when calling `DevRev.updateFeatureConfiguration(_:)`.
+
+```swift
+let configuration = FeatureConfiguration.default
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `enableFrameCapture` | `Bool` | `true` | Enables the screen capture pipeline used by session replay. |
+| `autoStartRecording` | `Bool` | `true` | Automatically starts recording after the SDK finishes remote configuration. |
+| `supportWidgetTheme` | `SupportWidgetTheme` | `.systemDefault` | Controls the appearance of the in-app support widget, including dynamic theme behavior. |
+
+Use the designated initializer to override any combination of options:
+
+```swift
+let configuration = FeatureConfiguration(
+	enableFrameCapture: false,
+	autoStartRecording: false,
+	supportWidgetTheme: .systemDefault
+)
+```
+
+When you only need to toggle frame capture while preserving the current runtime values for other options, use the convenience initializer:
+
+```swift
+DevRev.updateFeatureConfiguration(
+	.init(withShouldEnableFrameCapture: false)
+)
+```
+
+##### Support widget theme options
+
+`SupportWidgetTheme` lets you fine-tune the support UI. Start from `.systemDefault` or provide explicit values:
+
+```swift
+let customTheme = SupportWidgetTheme(
+	prefersSystemTheme: false,
+	primaryTextColor: "#1F2933",
+	accentColor: "#F97316",
+	spacing: [
+		"bottom": "20px",
+		"side": "16px"
+	]
+)
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `prefersSystemTheme` | `Bool` | `true` | Follows the device appearance when `true`; otherwise uses your custom colors. |
+| `primaryTextColor` | `String?` | `nil` | Hex or RGB value for primary text in the support widget. |
+| `accentColor` | `String?` | `nil` | Hex or RGB value applied to buttons and highlights. |
+| `spacing` | `[String: String]?` | `nil` | CSS-like spacing overrides (`"bottom"` and `"side"` keys are recognized). |
 
 - UIKit apps
 
@@ -122,7 +214,7 @@ Depending on your app's architecture, configure the SDK at the app's entry point
 
 To access certain features of the DevRev SDK, user identification is required.
 
-The identification function should be placed appropriately in your app after the user logs in. If you have the user information available at app launch, call the function after the `DevRev.configure(appID:)` method.
+The identification function should be placed appropriately in your app after the user logs in. If you have the user information available at app launch, call the function after your `DevRev.configure` call has completed.
 
 > [!TIP]
 > If you haven't previously identified the user, the DevRev SDK will automatically create an anonymous user for you immediately after the SDK is configured.
@@ -411,9 +503,24 @@ DevRev.shouldDismissModalsOnOpenLink: Bool
 
 The DevRev SDK allows you to configure the theme dynamically based on the system appearance, or use the theme configured on the DevRev portal. By default, the theme is dynamic and follows the system appearance.
 
+Use `SupportWidgetTheme` inside your `FeatureConfiguration` to align the support experience with your brand:
+
 ```swift
-DevRev.prefersSystemTheme: Bool
+DevRev.updateFeatureConfiguration(
+	FeatureConfiguration(
+		enableFrameCapture: true,
+		autoStartRecording: true,
+		supportWidgetTheme: SupportWidgetTheme(
+			prefersSystemTheme: false,
+			primaryTextColor: "#202020",
+			accentColor: "#34C759"
+		)
+	)
+)
 ```
+
+> [!CAUTION]
+> Directly mutating `DevRev.prefersSystemTheme` is maintained only for backward compatibility and is deprecated. Prefer configuring the theme through `SupportWidgetTheme` passed via `FeatureConfiguration`.
 
 ### Analytics
 

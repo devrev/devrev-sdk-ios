@@ -56,7 +56,8 @@ class HomeViewController: UITableViewController {
 			[
 				ActionableMenuItem(
 					title: NSLocalizedString("Force a crash", comment: ""),
-					style: .destructive
+					style: .destructive,
+					icon: "exclamationmark.triangle.fill"
 				),
 			],
 		]
@@ -153,8 +154,18 @@ class HomeViewController: UITableViewController {
 				reuseIdentifier: Constants.CellIdentifier.main
 			)
 			cell.textLabel?.text = item.title
-			cell.accessoryType = item.destination != nil ? .disclosureIndicator : .none
 			cell.textLabel?.textColor = item.style == .destructive ? .systemRed : .label
+
+			if let iconName = item.icon {
+				let iconImageView = UIImageView(image: UIImage(systemName: iconName))
+				iconImageView.tintColor = item.iconColor ?? (item.style == .destructive ? .systemRed : .label)
+				cell.accessoryView = iconImageView
+				cell.accessoryType = .none
+			}
+			else {
+				cell.accessoryView = nil
+				cell.accessoryType = item.destination != nil ? .disclosureIndicator : .none
+			}
 
 			return cell
 		default:

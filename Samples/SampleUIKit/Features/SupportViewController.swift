@@ -143,24 +143,12 @@ class SupportViewController: UITableViewController {
 
 	private func createSupportConversation() {
 		Task {
-			guard
-				await DevRev.isUserIdentified
-			else {
-				return
-			}
-
 			await DevRev.createSupportConversation()
 		}
 	}
 
 	@IBAction func showSupport() {
 		Task {
-			guard
-				await DevRev.isUserIdentified
-			else {
-				return
-			}
-
 			await DevRev.showSupport(isAnimated: true)
 		}
 	}

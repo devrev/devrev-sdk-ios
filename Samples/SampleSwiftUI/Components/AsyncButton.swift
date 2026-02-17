@@ -19,20 +19,16 @@ struct AsyncButton<Label: View>: View {
 				}
 
 				Task {
-					var progressViewTask: Task<Void, Error>?
-
 					if actionOptions.contains(.showProgressView) {
-						progressViewTask = Task {
-							try await Task.sleep(nanoseconds: 150_000_000)
+						Task {
 							showProgressView = true
+							try await Task.sleep(nanoseconds: 150_000_000)
+							showProgressView = false
 						}
 					}
 
 					await action()
-					progressViewTask?.cancel()
-
 					isDisabled = false
-					showProgressView = false
 				}
 			},
 			label: {

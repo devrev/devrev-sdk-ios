@@ -15,15 +15,21 @@ struct ActionableMenuItem: MenuItem {
 	let title: String
 	let destination: UIViewController.Type?
 	let style: MenuItemStyle
+	let icon: String?
+	let iconColor: UIColor?
 
 	init(
 		title: String,
 		destination: UIViewController.Type? = nil,
-		style: MenuItemStyle = .normal
+		style: MenuItemStyle = .normal,
+		icon: String? = nil,
+		iconColor: UIColor? = nil
 	) {
 		self.title = title
 		self.destination = destination
 		self.style = style
+		self.icon = icon
+		self.iconColor = iconColor
 	}
 }
 

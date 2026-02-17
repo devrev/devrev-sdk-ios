@@ -49,7 +49,11 @@ struct HomeView: View {
 							_ = array[1]
 						}
 					) {
-						Text("Force a crash")
+						HStack {
+							Text("Force a crash")
+							Spacer()
+							Image(systemName: "exclamationmark.triangle.fill")
+						}
 					}
 				}
 			}

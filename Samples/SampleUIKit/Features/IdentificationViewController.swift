@@ -10,7 +10,21 @@ class IdentificationViewController: UITableViewController {
 		}
 	}
 
-	private var currentUserID: String?
+	private var currentUserID: String? {
+		get {
+			UserDefaults.standard.string(forKey: "currentUserID")
+		}
+
+		set {
+			guard let newValue
+			else {
+				UserDefaults.standard.removeObject(forKey: "currentUserID")
+				return
+			}
+
+			UserDefaults.standard.set(newValue, forKey: "currentUserID")
+		}
+	}
 
 	private var sections = [[MenuItem]]()
 
@@ -215,6 +229,7 @@ class IdentificationViewController: UITableViewController {
 			await DevRev.identifyUnverifiedUser(Identity(userID: enteredUserID))
 			currentUserID = enteredUserID
 			await checkUserIdentification()
+
 			AlertPresenter.show(
 				on: self,
 				title: NSLocalizedString("User Identify", comment: ""),

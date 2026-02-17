@@ -11,6 +11,7 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 			- [Update the feature configuration](#update-the-feature-configuration)
 			- [Feature configuration reference](#feature-configuration-reference)
 				- [Support widget theme options](#support-widget-theme-options)
+				- [Configuration caching](#configuration-caching)
 	- [Features](#features)
 		- [Identification](#identification)
 			- [Identify an unverified user](#identify-an-unverified-user)
@@ -100,7 +101,7 @@ This will install the DevRev SDK in your project, making it ready for use.
 > [!CAUTION]
 > The DevRev SDK must be configured before you can use any of its features.
 
-The SDK becomes ready for use once the configuration API is executed.
+The SDK becomes ready for use once the configuration API is executed. Remote configuration is fetched from the backend and cached locally. On subsequent launches, you can use the cached configuration to avoid a network round-trip and speed up cold start (see [Configuration caching](#configuration-caching)).
 
 ```swift
 DevRev.configure(appID:)
@@ -118,7 +119,7 @@ For default behavior, call the simpler overload:
 DevRev.configure(appID: "abcdefg12345")
 ```
 
-To customize behavior such as frame capture, auto-start recording, or theme preferences, pass a `FeatureConfiguration` instance:
+To customize behavior such as frame capture, auto-start recording, configuration caching, or theme preferences, pass a `FeatureConfiguration` instance:
 
 ```swift
 DevRev.configure(
@@ -126,6 +127,7 @@ DevRev.configure(
 	featureConfiguration: FeatureConfiguration(
 		enableFrameCapture: false,
 		autoStartRecording: false,
+		alwaysUseRemoteConfig: true,
 		supportWidgetTheme: .systemDefault
 	)
 )
@@ -140,6 +142,7 @@ DevRev.updateFeatureConfiguration(
 	FeatureConfiguration(
 		enableFrameCapture: true,
 		autoStartRecording: true,
+		alwaysUseRemoteConfig: true,
 		supportWidgetTheme: .systemDefault
 	)
 )
@@ -156,7 +159,8 @@ let configuration = FeatureConfiguration.default
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `enableFrameCapture` | `Bool` | `true` | Enables the screen capture pipeline used by session replay. |
-| `autoStartRecording` | `Bool` | `true` | Automatically starts recording after the SDK finishes remote configuration. |
+| `autoStartRecording` | `Bool` | `true` | Automatically starts recording after the SDK finishes remote configuration (or when using cached config). |
+| `alwaysUseRemoteConfig` | `Bool` | `true` | When `true`, the SDK always fetches remote configuration at startup and when the app enters background. When `false`, the SDK uses cached configuration when available and skips the remote fetch, improving cold start. |
 | `supportWidgetTheme` | `SupportWidgetTheme` | `.systemDefault` | Controls the appearance of the in-app support widget, including dynamic theme behavior. |
 
 Use the designated initializer to override any combination of options:
@@ -165,6 +169,7 @@ Use the designated initializer to override any combination of options:
 let configuration = FeatureConfiguration(
 	enableFrameCapture: false,
 	autoStartRecording: false,
+	alwaysUseRemoteConfig: false,
 	supportWidgetTheme: .systemDefault
 )
 ```
@@ -176,6 +181,18 @@ DevRev.updateFeatureConfiguration(
 	.init(withShouldEnableFrameCapture: false)
 )
 ```
+
+When you only need to change the support widget theme, use the convenience initializer that preserves the current values for other options:
+
+```swift
+DevRev.updateFeatureConfiguration(
+	.init(witCustomSupportWidgetTheme: .systemDefault)
+)
+```
+
+##### Configuration caching
+
+When `alwaysUseRemoteConfig` is `false`, the SDK uses the last successfully fetched configuration stored on the device. If a cached configuration exists, the SDK skips the remote config request at startup and applies the cached settings (e.g. session replay, observability). This reduces cold-start latency and allows the app to work offline with the last known config. The first launch (or after clearing app data) still performs a remote fetch when network is available. Set `alwaysUseRemoteConfig: true` (the default) to retain the previous behavior of always fetching remote configuration at startup and when the app enters background.
 
 ##### Support widget theme options
 
@@ -510,6 +527,7 @@ DevRev.updateFeatureConfiguration(
 	FeatureConfiguration(
 		enableFrameCapture: true,
 		autoStartRecording: true,
+		alwaysUseRemoteConfig: true,
 		supportWidgetTheme: SupportWidgetTheme(
 			prefersSystemTheme: false,
 			primaryTextColor: "#202020",

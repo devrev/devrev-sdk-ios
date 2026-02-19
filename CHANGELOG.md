@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-02-19
+
+### Added
+- Feature configuration for screen capture, auto-start recording, plug chat theme, and remote config (fresh vs cached/lazy fetch).
+
+### Changed
+- Session upload now enforces minimum visit duration before uploading.
+
+### Fixed
+- Fixed frame capture flag injection so the flag is set at the correct place.
+- Fixed native logs ingestion.
+
 ## [2.2.10] - 2026-02-17
 
 ### Added

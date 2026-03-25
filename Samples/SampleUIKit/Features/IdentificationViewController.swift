@@ -28,6 +28,18 @@ class IdentificationViewController: UITableViewController {
 
 	private var sections = [[MenuItem]]()
 
+	private let accessibilityIDsForIdentification: [IndexPath: String] = [
+		IndexPath(row: 0, section: 0): TestConstants.AccessibilityID.Identification.userIdentifiedStatus,
+		IndexPath(row: 0, section: 1): TestConstants.AccessibilityID.Identification.unverifiedUserIDField,
+		IndexPath(row: 1, section: 1): TestConstants.AccessibilityID.Identification.identifyUnverifiedButton,
+		IndexPath(row: 0, section: 2): TestConstants.AccessibilityID.Identification.verifiedUserIDField,
+		IndexPath(row: 1, section: 2): TestConstants.AccessibilityID.Identification.sessionTokenField,
+		IndexPath(row: 2, section: 2): TestConstants.AccessibilityID.Identification.identifyVerifiedButton,
+		IndexPath(row: 0, section: 3): TestConstants.AccessibilityID.Identification.emailField,
+		IndexPath(row: 1, section: 3): TestConstants.AccessibilityID.Identification.updateUserButton,
+		IndexPath(row: 0, section: 4): TestConstants.AccessibilityID.Identification.logoutButton,
+	]
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -163,6 +175,7 @@ class IdentificationViewController: UITableViewController {
 			)
 			cell.configure(with: statusItem.title, status: statusItem.status)
 			cell.isUserInteractionEnabled = false
+			cell.accessibilityIdentifier = accessibilityIDsForIdentification[indexPath]
 
 			return cell
 		case let textFieldItem as TextFieldMenuItem:
@@ -172,6 +185,8 @@ class IdentificationViewController: UITableViewController {
 				reuseIdentifier: Constants.CellIdentifier.textField
 			)
 			cell.configure(with: textFieldItem.placeholder)
+			cell.accessibilityIdentifier = accessibilityIDsForIdentification[indexPath]
+
 			return cell
 		case let actionableItem as ActionableMenuItem:
 			let cell = UITableViewCell.dequeue(
@@ -180,6 +195,7 @@ class IdentificationViewController: UITableViewController {
 				reuseIdentifier: Constants.CellIdentifier.identification
 			)
 			configureActionableCell(cell, with: actionableItem)
+			cell.accessibilityIdentifier = accessibilityIDsForIdentification[indexPath]
 
 			return cell
 		default:

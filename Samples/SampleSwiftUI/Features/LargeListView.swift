@@ -19,6 +19,7 @@ struct ListViewScreen: View {
 					.padding()
 			}
 		}
+		.accessibilityIdentifier(TestConstants.AccessibilityID.LargeList.list)
 		.navigationTitle(title)
 	}
 }

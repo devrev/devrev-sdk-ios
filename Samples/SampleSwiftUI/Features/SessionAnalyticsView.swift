@@ -16,6 +16,7 @@ struct SessionAnalyticsView: View {
 			featureConfigurationSection
 			sessionRecordingSection
 			mediaSection
+			heavyUIsection
 			timerSection
 			errorCaptureSection
 			manualMaskingSection
@@ -39,23 +40,27 @@ struct SessionAnalyticsView: View {
 				status: "Is session monitoring enabled?",
 				isComplete: $isMonitoringEnabled
 			)
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.monitoringEnabledStatus)
 			StatusRow(
 				status: "Is the session recorded?",
 				isComplete: $isRecording
 			)
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.recordingStatus)
 		}
 	}
 
 	private var sessionMonitoringSection: some View {
 		Section(header: Text("Session Monitoring")) {
-			AsyncButton(text: "Stop Monitoring") {
-				DevRev.stopAllMonitoring()
-				await updateStatuses()
-			}
 			AsyncButton(text: "Resume All Monitoring") {
 				DevRev.resumeAllMonitoring()
 				await updateStatuses()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.resumeMonitoringButton)
+			AsyncButton(text: "Stop Monitoring") {
+				DevRev.stopAllMonitoring()
+				await updateStatuses()
+			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.stopMonitoringButton)
 		}
 	}
 
@@ -87,18 +92,22 @@ struct SessionAnalyticsView: View {
 				await DevRev.startRecording()
 				await updateStatuses()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.startRecordingButton)
 			AsyncButton(text: "Stop Recording") {
 				DevRev.stopRecording()
 				await updateStatuses()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.stopRecordingButton)
 			AsyncButton(text: "Pause Recording") {
 				DevRev.pauseRecording()
 				await updateStatuses()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.pauseRecordingButton)
 			AsyncButton(text: "Resume Recording") {
 				DevRev.resumeRecording()
 				await updateStatuses()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.resumeRecordingButton)
 		}
 	}
 
@@ -110,6 +119,20 @@ struct SessionAnalyticsView: View {
 			NavigationLink(destination: GalleryView()) {
 				Text("Gallery")
 			}
+			NavigationLink(destination: QRScannerView()) {
+				Text("QR Scanner")
+			}
+		}
+	}
+
+	private var heavyUIsection: some View {
+		Section(header: Text("Heavy UI")) {
+			NavigationLink(destination: HeavyUIView()) {
+				Text("Complex UI with Animations")
+			}
+			NavigationLink(destination: CryptoRealtimeView()) {
+				Text("Real Time UI")
+			}
 		}
 	}
 
@@ -120,11 +143,13 @@ struct SessionAnalyticsView: View {
 				DevRev.startTimer("test-event", properties: property)
 				await updateStatuses()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.startTimerButton)
 			AsyncButton(text: "Stop Timer") {
 				let property: [String: String] = ["test-key2": "test-value2"]
 				DevRev.endTimer("test-event", properties: property)
 				await updateStatuses()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.stopTimerButton)
 		}
 	}
 
@@ -146,7 +171,9 @@ struct SessionAnalyticsView: View {
 	private var manualMaskingSection: some View {
 		Section(header: Text("Manual Masking / Unmasking")) {
 			MaskedLabelView(text: "Manually Masked UI Item")
+				.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.maskedLabel)
 			UnmaskedTextFieldView(placeholder: "Manually Unmasked UI Item")
+				.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.unmaskedTextField)
 		}
 	}
 
@@ -156,6 +183,7 @@ struct SessionAnalyticsView: View {
 				DevRev.processAllOnDemandSessions()
 				await updateStatuses()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.processSessionsButton)
 		}
 	}
 
@@ -167,6 +195,7 @@ struct SessionAnalyticsView: View {
 			.sheet(isPresented: $isWebViewPresented) {
 				MaskedWebView()
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.openWebViewButton)
 		}
 	}
 
@@ -175,6 +204,7 @@ struct SessionAnalyticsView: View {
 			NavigationLink(destination: ListViewScreen()) {
 				Text("Open Large Scrollable List")
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.openLargeListLink)
 		}
 	}
 

@@ -63,6 +63,17 @@ class HomeViewController: UITableViewController {
 		]
 	}
 
+	private let accessibilityIDsForHome: [IndexPath: String] = [
+		IndexPath(row: 0, section: 0): TestConstants.AccessibilityID.Home.sdkConfiguredStatus,
+		IndexPath(row: 1, section: 0): TestConstants.AccessibilityID.Home.userIdentifiedStatus,
+		IndexPath(row: 2, section: 0): TestConstants.AccessibilityID.Home.monitoringEnabledStatus,
+		IndexPath(row: 0, section: 1): TestConstants.AccessibilityID.Home.identificationLink,
+		IndexPath(row: 1, section: 1): TestConstants.AccessibilityID.Home.pushNotificationsLink,
+		IndexPath(row: 2, section: 1): TestConstants.AccessibilityID.Home.supportLink,
+		IndexPath(row: 3, section: 1): TestConstants.AccessibilityID.Home.sessionAnalyticsLink,
+		IndexPath(row: 0, section: 2): TestConstants.AccessibilityID.Home.forceCrashButton,
+	]
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -145,6 +156,7 @@ class HomeViewController: UITableViewController {
 			)
 			cell.configure(with: item.title, status: item.status)
 			cell.isUserInteractionEnabled = false
+			cell.accessibilityIdentifier = accessibilityIDsForHome[indexPath]
 
 			return cell
 		case let item as ActionableMenuItem:
@@ -155,6 +167,7 @@ class HomeViewController: UITableViewController {
 			)
 			cell.textLabel?.text = item.title
 			cell.textLabel?.textColor = item.style == .destructive ? .systemRed : .label
+			cell.accessibilityIdentifier = accessibilityIDsForHome[indexPath]
 
 			if let iconName = item.icon {
 				let iconImageView = UIImageView(image: UIImage(systemName: iconName))

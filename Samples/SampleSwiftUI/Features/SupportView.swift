@@ -15,6 +15,7 @@ struct SupportView: View {
 					status: "Is the user identified?",
 					isComplete: $isUserIdentified
 				)
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Support.userIdentifiedStatus)
 			}
 			Section(header: Text("Support Chat")) {
 				AsyncButton(text: "Create a new conversation") {
@@ -22,6 +23,7 @@ struct SupportView: View {
 					await updateStatuses()
 				}
 				.disabled(!isUserIdentified)
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Support.createConversationButton)
 
 				AsyncButton(text: "Show the support chat") {
 					isSupportVisible = true
@@ -31,6 +33,7 @@ struct SupportView: View {
 				.sheet(isPresented: $isSupportVisible) {
 					DevRev.supportView.ignoresSafeArea()
 				}
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Support.showSupportButton)
 			}
 		}
 		.navigationTitle(title)

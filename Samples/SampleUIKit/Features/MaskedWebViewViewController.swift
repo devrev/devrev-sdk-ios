@@ -12,6 +12,7 @@ class MaskedWebViewViewController: UIViewController {
 		title = NSLocalizedString("Masking Web View", comment: "")
 
 		webView.translatesAutoresizingMaskIntoConstraints = false
+		webView.accessibilityIdentifier = TestConstants.AccessibilityID.MaskedWebView.webView
 		view.addSubview(webView)
 
 		NSLayoutConstraint.activate([

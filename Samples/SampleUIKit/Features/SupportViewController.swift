@@ -13,6 +13,12 @@ class SupportViewController: UITableViewController {
 
 	private var items = [[MenuItem]]()
 
+	private let accessibilityIDsForSupport: [IndexPath: String] = [
+		IndexPath(row: 0, section: 0): TestConstants.AccessibilityID.Support.userIdentifiedStatus,
+		IndexPath(row: 0, section: 1): TestConstants.AccessibilityID.Support.createConversationButton,
+		IndexPath(row: 1, section: 1): TestConstants.AccessibilityID.Support.showSupportButton,
+	]
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -109,6 +115,7 @@ class SupportViewController: UITableViewController {
 			)
 			cell.configure(with: statusItem.title, status: statusItem.status)
 			cell.isUserInteractionEnabled = false
+			cell.accessibilityIdentifier = accessibilityIDsForSupport[indexPath]
 
 			return cell
 		case let actionableItem as ActionableMenuItem:
@@ -118,6 +125,7 @@ class SupportViewController: UITableViewController {
 				reuseIdentifier: Constants.CellIdentifier.support
 			)
 			cell.textLabel?.text = actionableItem.title
+			cell.accessibilityIdentifier = accessibilityIDsForSupport[indexPath]
 
 			return cell
 		default:

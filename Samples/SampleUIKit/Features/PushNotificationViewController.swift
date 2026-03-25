@@ -8,6 +8,11 @@ class PushNotificationViewController: UITableViewController {
 		.init(title: NSLocalizedString("Unregister from Push Notifications", comment: "")),
 	]
 
+	private let accessibilityIDsForPushNotifications: [IndexPath: String] = [
+		IndexPath(row: 0, section: 0): TestConstants.AccessibilityID.PushNotifications.registerButton,
+		IndexPath(row: 1, section: 0): TestConstants.AccessibilityID.PushNotifications.unregisterButton,
+	]
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -42,6 +47,7 @@ class PushNotificationViewController: UITableViewController {
 			reuseIdentifier: Constants.CellIdentifier.pushNotifications
 		)
 		cell.textLabel?.text = items[indexPath.row].title
+		cell.accessibilityIdentifier = accessibilityIDsForPushNotifications[indexPath]
 
 		return cell
 	}

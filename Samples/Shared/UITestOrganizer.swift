@@ -11,6 +11,18 @@ public class UITestOrganizer: NSObject {
 		processInfo.environment[TestConstants.appID]
 	}
 
+	public var shouldDisableFrameCapture: Bool {
+		processInfo.arguments.contains(TestConstants.disableFrameCapture)
+	}
+
+	public var shouldDisableAutoRecording: Bool {
+		processInfo.arguments.contains(TestConstants.disableAutoRecording)
+	}
+
+	public var shouldDisableRemoteConfig: Bool {
+		processInfo.arguments.contains(TestConstants.disableRemoteConfig)
+	}
+
 	private let processInfo: ProcessInfo
 
 	// MARK: - Lifecycle

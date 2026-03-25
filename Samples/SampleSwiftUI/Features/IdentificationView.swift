@@ -18,11 +18,13 @@ struct IdentificationView: View {
 					status: "Is the user identified?",
 					isComplete: $isUserIdentified
 				)
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.userIdentifiedStatus)
 			}
 			Section(header: Text("Unverified User")) {
 				TextField("User ID", text: $unverifiedUserID)
 					.autocorrectionDisabled()
 					.autocapitalization(.none)
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.unverifiedUserIDField)
 
 				AsyncButton(text: "Identify the Unverified User") {
 					await DevRev.identifyUnverifiedUser(
@@ -30,15 +32,18 @@ struct IdentificationView: View {
 					)
 					await updateStatuses()
 				}
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.identifyUnverifiedButton)
 			}
 			Section(header: Text("Verified User")) {
 				TextField("User ID", text: $verifiedUserID)
 					.autocorrectionDisabled()
 					.autocapitalization(.none)
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.verifiedUserIDField)
 
 				TextField("Session Token", text: $verifiedSessionToken)
 					.autocorrectionDisabled()
 					.autocapitalization(.none)
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.sessionTokenField)
 
 				AsyncButton(text: "Identify the Unverified User") {
 					await DevRev.identifyVerifiedUser(
@@ -47,16 +52,19 @@ struct IdentificationView: View {
 					)
 					await updateStatuses()
 				}
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.identifyVerifiedButton)
 			}
 			Section(header: Text("Update User")) {
 				TextField("New Email", text: $email)
 					.autocorrectionDisabled()
 					.autocapitalization(.none)
 					.keyboardType(.emailAddress)
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.emailField)
 
 				AsyncButton(text: "Update the User") {
 					await updateUser()
 				}
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.updateUserButton)
 			}
 			Section(header: Text("Logout")) {
 				AsyncButton(
@@ -66,6 +74,7 @@ struct IdentificationView: View {
 					await DevRev.logout(deviceID: UIDevice.current.identifierForVendor?.uuidString ?? "")
 					await updateStatuses()
 				}
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Identification.logoutButton)
 			}
 		}
 		.navigationTitle(title)

@@ -15,6 +15,8 @@ class TableViewViewController: UITableViewController {
 			UITableViewCell.self,
 			forCellReuseIdentifier: Constants.CellIdentifier.tableView
 		)
+
+		tableView.accessibilityIdentifier = TestConstants.AccessibilityID.LargeList.list
 	}
 
 	override func tableView(

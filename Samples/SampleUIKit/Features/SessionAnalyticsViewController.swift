@@ -17,6 +17,24 @@ class SessionAnalyticsViewController: UITableViewController {
 
 	private var sessionItems = [[MenuItem]]()
 
+	private let accessibilityIDsForSessionAnalytics: [IndexPath: String] = [
+		IndexPath(row: 0, section: 0): TestConstants.AccessibilityID.SessionAnalytics.monitoringEnabledStatus,
+		IndexPath(row: 1, section: 0): TestConstants.AccessibilityID.SessionAnalytics.recordingStatus,
+		IndexPath(row: 0, section: 1): TestConstants.AccessibilityID.SessionAnalytics.stopMonitoringButton,
+		IndexPath(row: 1, section: 1): TestConstants.AccessibilityID.SessionAnalytics.resumeMonitoringButton,
+		IndexPath(row: 0, section: 3): TestConstants.AccessibilityID.SessionAnalytics.startRecordingButton,
+		IndexPath(row: 1, section: 3): TestConstants.AccessibilityID.SessionAnalytics.stopRecordingButton,
+		IndexPath(row: 2, section: 3): TestConstants.AccessibilityID.SessionAnalytics.pauseRecordingButton,
+		IndexPath(row: 3, section: 3): TestConstants.AccessibilityID.SessionAnalytics.resumeRecordingButton,
+		IndexPath(row: 0, section: 6): TestConstants.AccessibilityID.SessionAnalytics.startTimerButton,
+		IndexPath(row: 1, section: 6): TestConstants.AccessibilityID.SessionAnalytics.stopTimerButton,
+		IndexPath(row: 0, section: 8): TestConstants.AccessibilityID.SessionAnalytics.maskedLabel,
+		IndexPath(row: 1, section: 8): TestConstants.AccessibilityID.SessionAnalytics.unmaskedTextField,
+		IndexPath(row: 0, section: 9): TestConstants.AccessibilityID.SessionAnalytics.processSessionsButton,
+		IndexPath(row: 0, section: 10): TestConstants.AccessibilityID.SessionAnalytics.openWebViewButton,
+		IndexPath(row: 0, section: 11): TestConstants.AccessibilityID.SessionAnalytics.openLargeListLink,
+	]
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -59,6 +77,7 @@ private extension SessionAnalyticsViewController {
 			createFeatureConfigurationSection(),
 			createSessionRecordingSection(),
 			createMediaSection(),
+			createHeavyUISection(),
 			createTimerSection(),
 			createErrorCaptureSection(),
 			createManualMaskingSection(),
@@ -135,6 +154,23 @@ private extension SessionAnalyticsViewController {
 			ActionableMenuItem(
 				title: NSLocalizedString("Gallery", comment: ""),
 				destination: GalleryViewController.self
+			),
+			ActionableMenuItem(
+				title: NSLocalizedString("QR Scanner", comment: ""),
+				destination: QRScannerViewController.self
+			),
+		]
+	}
+
+	func createHeavyUISection() -> [MenuItem] {
+		[
+			ActionableMenuItem(
+				title: NSLocalizedString("Complex UI with Animations", comment: ""),
+				destination: HeavyUIViewController.self
+			),
+			ActionableMenuItem(
+				title: NSLocalizedString("Real Time UI", comment: ""),
+				destination: CryptoRealTimeViewController.self
 			),
 		]
 	}
@@ -229,16 +265,18 @@ extension SessionAnalyticsViewController {
 		case 4:
 			NSLocalizedString("Media", comment: "")
 		case 5:
-			NSLocalizedString("Timer", comment: "")
+			NSLocalizedString("Heavy UI", comment: "")
 		case 6:
-			NSLocalizedString("Error Capture", comment: "")
+			NSLocalizedString("Timer", comment: "")
 		case 7:
-			NSLocalizedString("Manual Masking / Unmasking", comment: "")
+			NSLocalizedString("Error Capture", comment: "")
 		case 8:
-			NSLocalizedString("On-demand Sessions", comment: "")
+			NSLocalizedString("Manual Masking / Unmasking", comment: "")
 		case 9:
-			NSLocalizedString("Web View", comment: "")
+			NSLocalizedString("On-demand Sessions", comment: "")
 		case 10:
+			NSLocalizedString("Web View", comment: "")
+		case 11:
 			NSLocalizedString("Large Scrollable Table", comment: "")
 		default:
 			nil
@@ -260,6 +298,7 @@ extension SessionAnalyticsViewController {
 			)
 			cell.configure(with: statusItem.title, status: statusItem.status)
 			cell.isUserInteractionEnabled = false
+			cell.accessibilityIdentifier = accessibilityIDsForSessionAnalytics[indexPath]
 
 			return cell
 		case let actionableItem as ActionableMenuItem:
@@ -269,6 +308,8 @@ extension SessionAnalyticsViewController {
 				reuseIdentifier: Constants.CellIdentifier.sessionAnalytics
 			)
 			cell.textLabel?.text = actionableItem.title
+			cell.accessoryType = actionableItem.destination != nil ? .disclosureIndicator : .none
+			cell.accessibilityIdentifier = accessibilityIDsForSessionAnalytics[indexPath]
 			if let iconColor = actionableItem.iconColor {
 				cell.textLabel?.textColor = iconColor
 			}
@@ -296,6 +337,7 @@ extension SessionAnalyticsViewController {
 			cell.textLabel?.text = maskedItem.title
 			DevRev.markSensitiveViews([cell])
 			cell.selectionStyle = .none
+			cell.accessibilityIdentifier = accessibilityIDsForSessionAnalytics[indexPath]
 			return cell
 		case let textFieldItem as TextFieldMenuItem:
 			let cell = TextInputTableViewCell.dequeue(
@@ -306,6 +348,7 @@ extension SessionAnalyticsViewController {
 			cell.configure(with: textFieldItem.placeholder)
 			DevRev.unmarkSensitiveViews([cell.textField])
 			cell.selectionStyle = .none
+			cell.accessibilityIdentifier = accessibilityIDsForSessionAnalytics[indexPath]
 			return cell
 		default:
 			return UITableViewCell()
@@ -358,13 +401,13 @@ extension SessionAnalyticsViewController {
 			handlePauseUserInteractionTracking()
 		case (3, 5):
 			handleResumeUserInteractionTracking()
-		case (5, 0):
-			handleStartTimer()
-		case (5, 1):
-			handleEndTimer()
 		case (6, 0):
+			handleStartTimer()
+		case (6, 1):
+			handleEndTimer()
+		case (7, 0):
 			handleCaptureError()
-		case (8, 0):
+		case (9, 0):
 			handleProcessOnDemandSessions()
 		default:
 			break
@@ -373,7 +416,9 @@ extension SessionAnalyticsViewController {
 
 	func navigateToDestinationIfNeeded(at indexPath: IndexPath) {
 		let item = sessionItems[indexPath.section][indexPath.row]
-		guard let destinationViewController = (item as? ActionableMenuItem)?.destination else {
+		guard
+			let destinationViewController = (item as? ActionableMenuItem)?.destination
+		else {
 			return
 		}
 

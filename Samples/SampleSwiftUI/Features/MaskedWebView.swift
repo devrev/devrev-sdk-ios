@@ -10,6 +10,7 @@ struct MaskedWebView: View {
 
 	var body: some View {
 		WebViewWrapper(url: url)
+			.accessibilityIdentifier(TestConstants.AccessibilityID.MaskedWebView.webView)
 			.navigationTitle("Web View Masking")
 			.navigationBarTitleDisplayMode(.inline)
 	}

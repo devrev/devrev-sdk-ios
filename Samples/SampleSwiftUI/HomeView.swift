@@ -15,29 +15,36 @@ struct HomeView: View {
 						status: "Is the SDK configured?",
 						isComplete: $isConfigured
 					)
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Home.sdkConfiguredStatus)
 					StatusRow(
 						status: "Is the user identified?",
 						isComplete: $isUserIdentified
 					)
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Home.userIdentifiedStatus)
 					StatusRow(
 						status: "Is session monitoring enabled?",
 						isComplete: $isMonitoringEnabled
 					)
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Home.monitoringEnabledStatus)
 				}
 
 				Section(header: Text("Features")) {
 					NavigationLink(destination: IdentificationView()) {
 						Text("Identification")
 					}
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Home.identificationLink)
 					NavigationLink(destination: PushNotificationsView()) {
 						Text("Push Notifications")
 					}
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Home.pushNotificationsLink)
 					NavigationLink(destination: SupportView()) {
 						Text("Support")
 					}
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Home.supportLink)
 					NavigationLink(destination: SessionAnalyticsView()) {
 						Text("Session Analytics")
 					}
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Home.sessionAnalyticsLink)
 				}
 
 				Section(header: Text("Debug")) {
@@ -55,6 +62,7 @@ struct HomeView: View {
 							Image(systemName: "exclamationmark.triangle.fill")
 						}
 					}
+					.accessibilityIdentifier(TestConstants.AccessibilityID.Home.forceCrashButton)
 				}
 			}
 			.navigationTitle("DevRev SDK")

@@ -32,7 +32,20 @@ class AppDelegate:
 			fatalError("Missing app ID for testing")
 		}
 
-		DevRev.configure(appID: appID)
+		if testOrganizer.isInTestMode {
+			DevRev.configure(
+				appID: appID,
+				featureConfiguration: FeatureConfiguration(
+					enableFrameCapture: !testOrganizer.shouldDisableFrameCapture,
+					autoStartRecording: !testOrganizer.shouldDisableAutoRecording,
+					alwaysUseRemoteConfig: !testOrganizer.shouldDisableRemoteConfig,
+					supportWidgetTheme: .systemDefault
+				)
+			)
+		}
+		else {
+			DevRev.configure(appID: appID)
+		}
 
 		Task { @MainActor in
 			await requestPushNotificationsAuthorization()

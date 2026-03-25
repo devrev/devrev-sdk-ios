@@ -10,8 +10,8 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 		- [Set up the DevRev SDK](#set-up-the-devrev-sdk)
 			- [Update the feature configuration](#update-the-feature-configuration)
 			- [Feature configuration reference](#feature-configuration-reference)
-				- [Support widget theme options](#support-widget-theme-options)
 				- [Configuration caching](#configuration-caching)
+				- [Support widget theme options](#support-widget-theme-options)
 	- [Features](#features)
 		- [Identification](#identification)
 			- [Identify an unverified user](#identify-an-unverified-user)
@@ -33,6 +33,7 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 		- [New conversation closure](#new-conversation-closure)
 		- [In-app link handling](#in-app-link-handling)
 		- [Dynamic theme configuration](#dynamic-theme-configuration)
+		- [PLuG article search filters](#plug-article-search-filters)
 		- [Analytics](#analytics)
 		- [Session analytics](#session-analytics)
 			- [Opt in or out](#opt-in-or-out)
@@ -128,7 +129,8 @@ DevRev.configure(
 		enableFrameCapture: false,
 		autoStartRecording: false,
 		alwaysUseRemoteConfig: true,
-		supportWidgetTheme: .systemDefault
+		supportWidgetTheme: .systemDefault,
+		enableSupportChatStreaming: false
 	)
 )
 ```
@@ -143,7 +145,8 @@ DevRev.updateFeatureConfiguration(
 		enableFrameCapture: true,
 		autoStartRecording: true,
 		alwaysUseRemoteConfig: true,
-		supportWidgetTheme: .systemDefault
+		supportWidgetTheme: .systemDefault,
+		enableSupportChatStreaming: false
 	)
 )
 ```
@@ -162,6 +165,8 @@ let configuration = FeatureConfiguration.default
 | `autoStartRecording` | `Bool` | `true` | Automatically starts recording after the SDK finishes remote configuration (or when using cached config). |
 | `alwaysUseRemoteConfig` | `Bool` | `true` | When `true`, the SDK always fetches remote configuration at startup and when the app enters background. When `false`, the SDK uses cached configuration when available and skips the remote fetch, improving cold start. |
 | `supportWidgetTheme` | `SupportWidgetTheme` | `.systemDefault` | Controls the appearance of the in-app support widget, including dynamic theme behavior. |
+| `enableSupportChatStreaming` | `Bool` | `false` | When `true`, enables real-time AI agent response streaming in PLuG conversations (WebSocket streaming, optimistic UI, animated text). |
+| `supportWidgetArticleSearchFilters` | `ArticleSearchFilters?` | `nil` | Optional filters for PLuG article search (widget and CMDK). Applied automatically when the support widget is ready. |
 
 Use the designated initializer to override any combination of options:
 
@@ -170,7 +175,9 @@ let configuration = FeatureConfiguration(
 	enableFrameCapture: false,
 	autoStartRecording: false,
 	alwaysUseRemoteConfig: false,
-	supportWidgetTheme: .systemDefault
+	supportWidgetTheme: .systemDefault,
+	enableSupportChatStreaming: true,
+	articleSearchFilters: myFilters
 )
 ```
 
@@ -532,13 +539,64 @@ DevRev.updateFeatureConfiguration(
 			prefersSystemTheme: false,
 			primaryTextColor: "#202020",
 			accentColor: "#34C759"
-		)
+		),
+		enableSupportChatStreaming: true
 	)
 )
 ```
 
 > [!CAUTION]
 > Directly mutating `DevRev.prefersSystemTheme` is maintained only for backward compatibility and is deprecated. Prefer configuring the theme through `SupportWidgetTheme` passed via `FeatureConfiguration`.
+
+### PLuG article search filters
+
+Set `FeatureConfiguration.supportWidgetArticleSearchFilters` to control which articles are returned by PLuG search (widget search and CMDK search). Filters are applied automatically when the support widget is ready.
+
+Use `ArticleSearchFilters` to set separate filters for widget search (`widgetSearch`) and CMDK search (`searchBarSearch`). Each filter uses DQL-style expressions with an operator (`op`) and `operands` (field, op, value, valueType). Use `ArticleSearchFilterOperator` cases such as `.and`, `.or`, `.in`, `.eq`, `.ne`, `.gt`, `.gte`, `.lt`, `.lte` (plus other backend-supported operators), and `ArticleSearchFilterOperandValueType` (`.json` or `.part`) for each operand’s `valueType`.
+
+Example:
+
+```swift
+let filters = ArticleSearchFilters(
+    widgetSearch: ArticleSearchFilter(
+        op: .and,
+        operands: [
+            ArticleSearchFilterOperand(
+                field: "article.tags.tag_id",
+                op: .in,
+                value: .stringArray(["don:core:dvrv-us-1:devo/1T6yo cw2Y9:tag/32"]),
+                valueType: .json
+            )
+        ]
+    ),
+    searchBarSearch: ArticleSearchFilter(
+        op: .and,
+        operands: [
+            ArticleSearchFilterOperand(
+                field: "article.tags.tag_id",
+                op: .ne,
+                value: .stringArray(["don:core:dvrv-us-1:devo/1T6yo cw2Y9:tag/32"]),
+                valueType: .json
+            )
+        ]
+    )
+)
+DevRev.configure(
+    appID: appID,
+    featureConfiguration: FeatureConfiguration(
+        enableFrameCapture: true,
+        autoStartRecording: true,
+        alwaysUseRemoteConfig: true,
+        supportWidgetTheme: .systemDefault,
+        supportWidgetArticleSearchFilters: filters
+    )
+)
+```
+
+To filter only one surface, pass a filter for that surface only (e.g. `ArticleSearchFilters(widgetSearch: someFilter, searchBarSearch: nil)`). Pass `nil` for `supportWidgetArticleSearchFilters` for no filter.
+
+> [!NOTE]
+> For the AI agent on the conversation page to use the same filtered article set, configure the Hybrid Search snap-in and attach it to the agent’s skills in the DevRev app, and include the required filters in the search query. See [DevRev docs](https://devrev.ai/docs) for snap-in setup.
 
 ### Analytics
 

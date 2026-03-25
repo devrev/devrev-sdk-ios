@@ -13,6 +13,7 @@ struct PushNotificationsView: View {
 				UIApplication.shared.registerForRemoteNotifications()
 				showAlert(title: "Registered", message: "You have successfully registered for push notifications.")
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.PushNotifications.registerButton)
 
 			AsyncButton(text: "Unregister from Push Notifications") {
 				UIApplication.shared.unregisterForRemoteNotifications()
@@ -27,6 +28,7 @@ struct PushNotificationsView: View {
 					showAlert(title: "Unregistered", message: "You have successfully unregistered from push notifications.")
 				}
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.PushNotifications.unregisterButton)
 		}
 		.navigationTitle("Push Notifications")
 		.alert(isPresented: $showAlert) {

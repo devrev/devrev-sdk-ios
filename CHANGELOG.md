@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.6] - 2026-05-11
+
+### Fixed
+- Fixed missing crash type not appearing on the dashboard by exposing the crash type field in the iOS crash event.
+- Fixed push notifications not being delivered in sandbox environments due to incorrect APNs push type.
+
 ## [2.3.5] - 2026-04-24
 
 ### Changed
@@ -109,7 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added support to track user interactions within WebView components, improving analytics and engagement insights.
-  
+
 ### Changed
 - Simplified identification flow by deprecating redundant anonymous API usage.
 
@@ -120,9 +126,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added the ability to pause and resume user interaction event tracking, offering more security on the confidential screens.
-  
+
 ### Changed
-- Improved performance and modularity by decoupling the screen recording functionality from the main tracking flow. 
+- Improved performance and modularity by decoupling the screen recording functionality from the main tracking flow.
 
 ### Fixed
 - Corrected incorrect or missing device model names on certain iPhone versions.

@@ -151,7 +151,7 @@ class SupportViewController: UITableViewController {
 
 	private func createSupportConversation() {
 		Task {
-			await DevRev.createSupportConversation()
+			await DevRev.createSupportConversation(prefillMessage: "Hi")
 		}
 	}
 

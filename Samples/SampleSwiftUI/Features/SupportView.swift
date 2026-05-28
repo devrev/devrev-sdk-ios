@@ -19,7 +19,7 @@ struct SupportView: View {
 			}
 			Section(header: Text("Support Chat")) {
 				AsyncButton(text: "Create a new conversation") {
-					await DevRev.createSupportConversation()
+					await DevRev.createSupportConversation(prefillMessage: "Hi")
 					await updateStatuses()
 				}
 				.disabled(!isUserIdentified)

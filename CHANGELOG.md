@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.7] - 2026-05-28
+
+### Added
+- Optional prefilled message support the support chat input field.
+- Feature configuration flag `maskAllTextByDefault` to automatically mask all visible text.
+
+### Fixed
+- Fixed crashes from thread-unsafe.
+- Fixed pause and resume user interaction tracking APIs.
+- Fixed session recordings associating events with the wrong DevRev's workspace.
+
 ## [2.3.6] - 2026-05-11
 
 ### Fixed

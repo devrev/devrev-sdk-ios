@@ -167,6 +167,7 @@ let configuration = FeatureConfiguration.default
 | `supportWidgetTheme` | `SupportWidgetTheme` | `.systemDefault` | Controls the appearance of the in-app support widget, including dynamic theme behavior. |
 | `enableSupportChatStreaming` | `Bool` | `false` | When `true`, enables real-time AI agent response streaming in PLuG conversations (WebSocket streaming, optimistic UI, animated text). |
 | `supportWidgetArticleSearchFilters` | `ArticleSearchFilters?` | `nil` | Optional filters for PLuG article search (widget and CMDK). Applied automatically when the support widget is ready. |
+| `maskAllTextByDefault` | `Bool` | `false` | When `true`, every view that displays text — including labels, buttons, and SwiftUI `Text` views — is automatically masked in session recordings. When `false` (the default), only text input fields (`UITextField`, `UITextView`) are auto-masked. |
 
 Use the designated initializer to override any combination of options:
 
@@ -177,7 +178,8 @@ let configuration = FeatureConfiguration(
 	alwaysUseRemoteConfig: false,
 	supportWidgetTheme: .systemDefault,
 	enableSupportChatStreaming: true,
-	articleSearchFilters: myFilters
+	supportWidgetArticleSearchFilters: myFilters,
+	maskAllTextByDefault: true
 )
 ```
 
@@ -196,6 +198,7 @@ DevRev.updateFeatureConfiguration(
 	.init(witCustomSupportWidgetTheme: .systemDefault)
 )
 ```
+
 
 ##### Configuration caching
 
@@ -479,13 +482,16 @@ DevRev.supportView
 You can initiate a new support conversation directly from your app. This method displays the support chat screen and simultaneously creates a new conversation.
 
 ```swift
-DevRev.createSupportConversation(isAnimated:)
+DevRev.createSupportConversation(isAnimated:prefillMessage:)
 ```
 
-For example:
+You can optionally pass a plain-text message to prefill the conversation input field:
 
 ```swift
-// Create a new support conversation directly from the top-most view controller.
+// Create a new support conversation with animation and a prefilled message.
+await DevRev.createSupportConversation(isAnimated: true, prefillMessage: "I need help with billing for order #12345")
+
+// Create a new support conversation with animation and without a prefilled message.
 await DevRev.createSupportConversation(isAnimated: true)
 ```
 
@@ -677,6 +683,8 @@ DevRev.clearSessionProperties()
 #### Masking sensitive data
 
 To protect sensitive data, the DevRev SDK provides an auto-masking feature that masks data before sending to the server. Input views such as text fields, text views, and web views are automatically masked.
+
+When `FeatureConfiguration.maskAllTextByDefault` is set to `true`, all text-bearing views — including labels, buttons, and SwiftUI `Text` views — are also automatically masked in session recordings. It is `false` by default, meaning only input fields are masked.
 
 While the auto-masking feature may be sufficient for most situations, you can manually mark additional views as sensitive using the following method:
 

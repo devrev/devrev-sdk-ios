@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.8] - 2026-06-11
+
+### Fixed
+- Fixed unknown network type in session events by correctly identifying the cellular data service, radio generation, and Wi‑Fi/cellular transitions.
+- Fixed session replay snapshot quality and touch coordinate rendering in landscape orientation.
+- Fixed support chat conversation being cleared when a transient modal is dismissed.
+- Fixed trait collection initialization crash.
+
 ## [2.3.7] - 2026-05-28
 
 ### Added

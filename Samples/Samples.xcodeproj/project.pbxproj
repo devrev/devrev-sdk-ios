@@ -135,6 +135,7 @@
 			name = SampleSwiftUI;
 			packageProductDependencies = (
 				2158570A29DEEE0500635927 /* DevRevSDK */,
+				84113CD92FD95F0C0099E6DC /* Lottie */,
 			);
 			productName = Sample;
 			productReference = 34229CDF2975577F0050639F /* SampleSwiftUI.app */;
@@ -161,6 +162,7 @@
 			name = SampleUIKit;
 			packageProductDependencies = (
 				2158570D29DEEE1000635927 /* DevRevSDK */,
+				84113CDA2FD95F0C0099E6DC /* Lottie */,
 			);
 			productName = SampleUIKit;
 			productReference = 34E22DA2298967FD006B21A1 /* SampleUIKit.app */;
@@ -195,6 +197,7 @@
 			mainGroup = 34229CD42975574B0050639F;
 			packageReferences = (
 				2158570929DEEE0500635927 /* XCRemoteSwiftPackageReference "devrev-sdk-ios" */,
+				84113CD82FD95F0C0099E6DC /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			productRefGroup = 34229CE02975577F0050639F /* Products */;
 			projectDirPath = "";
@@ -341,6 +344,14 @@
 				kind = branch;
 			};
 		};
+		84113CD82FD95F0C0099E6DC /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -357,6 +368,16 @@
 		346E64B22983D22100FC660D /* DevRevSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DevRevSDK;
+		};
+		84113CD92FD95F0C0099E6DC /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84113CD82FD95F0C0099E6DC /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+		84113CDA2FD95F0C0099E6DC /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84113CD82FD95F0C0099E6DC /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

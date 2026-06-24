@@ -72,6 +72,8 @@ enum TestConstants {
 			static let stopTimerButton = "sessionAnalytics.timer.stop"
 			static let maskedLabel = "sessionAnalytics.masking.maskedLabel"
 			static let unmaskedTextField = "sessionAnalytics.masking.unmaskedTextField"
+			static let eventTypeDropdown = "sessionAnalytics.dropdown.eventType"
+			static let prioritySegment = "sessionAnalytics.segment.priority"
 			static let processSessionsButton = "sessionAnalytics.onDemand.process"
 			static let openWebViewButton = "sessionAnalytics.webView.open"
 			static let openLargeListLink = "sessionAnalytics.largeList.open"

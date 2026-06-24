@@ -17,6 +17,31 @@ class SessionAnalyticsViewController: UITableViewController {
 
 	private var sessionItems = [[MenuItem]]()
 
+	private let eventTypeOptions = [
+		NSLocalizedString("Page View", comment: ""),
+		NSLocalizedString("Button Click", comment: ""),
+		NSLocalizedString("Form Submit", comment: ""),
+		NSLocalizedString("Scroll", comment: ""),
+		NSLocalizedString("Search", comment: ""),
+		NSLocalizedString("Add to Cart", comment: ""),
+		NSLocalizedString("Checkout", comment: ""),
+		NSLocalizedString("Login", comment: ""),
+		NSLocalizedString("Logout", comment: ""),
+		NSLocalizedString("Sign Up", comment: ""),
+		NSLocalizedString("Error", comment: ""),
+		NSLocalizedString("Custom Event", comment: ""),
+	]
+
+	private var selectedEventType = ""
+
+	private let prioritySegmentOptions = [
+		NSLocalizedString("Low", comment: ""),
+		NSLocalizedString("Medium", comment: ""),
+		NSLocalizedString("High", comment: ""),
+	]
+
+	private var selectedPriorityIndex = 0
+
 	private let accessibilityIDsForSessionAnalytics: [IndexPath: String] = [
 		IndexPath(row: 0, section: 0): TestConstants.AccessibilityID.SessionAnalytics.monitoringEnabledStatus,
 		IndexPath(row: 1, section: 0): TestConstants.AccessibilityID.SessionAnalytics.recordingStatus,
@@ -30,13 +55,17 @@ class SessionAnalyticsViewController: UITableViewController {
 		IndexPath(row: 1, section: 6): TestConstants.AccessibilityID.SessionAnalytics.stopTimerButton,
 		IndexPath(row: 0, section: 8): TestConstants.AccessibilityID.SessionAnalytics.maskedLabel,
 		IndexPath(row: 1, section: 8): TestConstants.AccessibilityID.SessionAnalytics.unmaskedTextField,
-		IndexPath(row: 0, section: 9): TestConstants.AccessibilityID.SessionAnalytics.processSessionsButton,
-		IndexPath(row: 0, section: 10): TestConstants.AccessibilityID.SessionAnalytics.openWebViewButton,
-		IndexPath(row: 0, section: 11): TestConstants.AccessibilityID.SessionAnalytics.openLargeListLink,
+		IndexPath(row: 0, section: 9): TestConstants.AccessibilityID.SessionAnalytics.eventTypeDropdown,
+		IndexPath(row: 1, section: 9): TestConstants.AccessibilityID.SessionAnalytics.prioritySegment,
+		IndexPath(row: 0, section: 10): TestConstants.AccessibilityID.SessionAnalytics.processSessionsButton,
+		IndexPath(row: 0, section: 11): TestConstants.AccessibilityID.SessionAnalytics.openWebViewButton,
+		IndexPath(row: 0, section: 12): TestConstants.AccessibilityID.SessionAnalytics.openLargeListLink,
 	]
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
+		selectedEventType = eventTypeOptions[0]
 
 		title = NSLocalizedString("Session Analytics", comment: "")
 		navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -58,6 +87,14 @@ class SessionAnalyticsViewController: UITableViewController {
 		tableView.register(
 			UINib(nibName: "TextInputTableViewCell", bundle: nil),
 			forCellReuseIdentifier: Constants.CellIdentifier.textField
+		)
+		tableView.register(
+			DropdownTableViewCell.self,
+			forCellReuseIdentifier: Constants.CellIdentifier.dropdown
+		)
+		tableView.register(
+			SegmentTableViewCell.self,
+			forCellReuseIdentifier: Constants.CellIdentifier.segment
 		)
 
 		DevRev.addSessionProperties( ["test_user_id": "test_001"])
@@ -81,6 +118,7 @@ private extension SessionAnalyticsViewController {
 			createTimerSection(),
 			createErrorCaptureSection(),
 			createManualMaskingSection(),
+			createDropdownSection(),
 			createOnDemandSessionsSection(),
 			createWebViewSection(),
 			createLargeScrollableTableSection(),
@@ -208,6 +246,19 @@ private extension SessionAnalyticsViewController {
 		]
 	}
 
+	func createDropdownSection() -> [MenuItem] {
+		[
+			DropdownMenuItem(
+				title: NSLocalizedString("Event Type", comment: ""),
+				options: eventTypeOptions
+			),
+			SegmentedMenuItem(
+				title: NSLocalizedString("Priority Level", comment: ""),
+				segments: prioritySegmentOptions
+			),
+		]
+	}
+
 	func createOnDemandSessionsSection() -> [MenuItem] {
 		[
 			ActionableMenuItem(
@@ -273,16 +324,19 @@ extension SessionAnalyticsViewController {
 		case 8:
 			NSLocalizedString("Manual Masking / Unmasking", comment: "")
 		case 9:
-			NSLocalizedString("On-demand Sessions", comment: "")
+			NSLocalizedString("Dropdown Selection", comment: "")
 		case 10:
-			NSLocalizedString("Web View", comment: "")
+			NSLocalizedString("On-demand Sessions", comment: "")
 		case 11:
+			NSLocalizedString("Web View", comment: "")
+		case 12:
 			NSLocalizedString("Large Scrollable Table", comment: "")
 		default:
 			nil
 		}
 	}
 
+	// swiftlint:disable:next function_body_length
 	override func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
@@ -350,6 +404,49 @@ extension SessionAnalyticsViewController {
 			cell.selectionStyle = .none
 			cell.accessibilityIdentifier = accessibilityIDsForSessionAnalytics[indexPath]
 			return cell
+		case let dropdownItem as DropdownMenuItem:
+			guard
+				let cell = tableView.dequeueReusableCell(
+					withIdentifier: Constants.CellIdentifier.dropdown,
+					for: indexPath
+				) as? DropdownTableViewCell
+			else {
+				return UITableViewCell()
+			}
+
+			cell.configure(
+				title: dropdownItem.title,
+				options: dropdownItem.options,
+				selectedOption: selectedEventType
+			) { [weak self] selectedOption in
+				self?.handleEventTypeSelection(selectedOption)
+			}
+			cell.accessibilityIdentifier = accessibilityIDsForSessionAnalytics[indexPath]
+
+			return cell
+		case let segmentedItem as SegmentedMenuItem:
+			guard
+				let cell = tableView.dequeueReusableCell(
+					withIdentifier: Constants.CellIdentifier.segment,
+					for: indexPath
+				) as? SegmentTableViewCell
+			else {
+				return UITableViewCell()
+			}
+
+			cell.configure(
+				title: segmentedItem.title,
+				segments: segmentedItem.segments,
+				selectedIndex: selectedPriorityIndex
+			) { [weak self] selectedIndex, selectedSegment in
+				self?.handlePrioritySelection(
+					selectedIndex: selectedIndex,
+					selectedSegment: selectedSegment
+				)
+			}
+			cell.accessibilityIdentifier = accessibilityIDsForSessionAnalytics[indexPath]
+
+			return cell
 		default:
 			return UITableViewCell()
 		}
@@ -407,7 +504,7 @@ extension SessionAnalyticsViewController {
 			handleEndTimer()
 		case (7, 0):
 			handleCaptureError()
-		case (9, 0):
+		case (10, 0):
 			handleProcessOnDemandSessions()
 		default:
 			break
@@ -617,6 +714,19 @@ private extension SessionAnalyticsViewController {
 			title: NSLocalizedString("Error Captured", comment: ""),
 			message: NSLocalizedString("Test error has been captured and sent to SDK.", comment: "")
 		)
+	}
+
+	func handleEventTypeSelection(_ selectedOption: String) {
+		selectedEventType = selectedOption
+		DevRev.addSessionProperties(["selected_event_type": selectedOption])
+	}
+
+	func handlePrioritySelection(
+		selectedIndex: Int,
+		selectedSegment: String
+	) {
+		selectedPriorityIndex = selectedIndex
+		DevRev.addSessionProperties(["selected_priority_level": selectedSegment])
 	}
 
 	func handleProcessOnDemandSessions() {

@@ -216,7 +216,11 @@ let customTheme = SupportWidgetTheme(
 	spacing: [
 		"bottom": "20px",
 		"side": "16px"
-	]
+	],
+	conversationPageOptions: ConversationPageOptions(
+		headerText: "DevRev Support",
+		subheaderText: "Typically replies in minutes"
+	)
 )
 ```
 
@@ -226,6 +230,14 @@ let customTheme = SupportWidgetTheme(
 | `primaryTextColor` | `String?` | `nil` | Hex or RGB value for primary text in the support widget. |
 | `accentColor` | `String?` | `nil` | Hex or RGB value applied to buttons and highlights. |
 | `spacing` | `[String: String]?` | `nil` | CSS-like spacing overrides (`"bottom"` and `"side"` keys are recognized). |
+| `conversationPageOptions` | `ConversationPageOptions?` | `nil` | Customizes the conversation page header and subheader text. |
+
+`ConversationPageOptions` controls branding on the support chat conversation page:
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `headerText` | `String?` | `nil` | Custom text for the conversation header. Uses the server default when `nil`. |
+| `subheaderText` | `String?` | `nil` | Custom text for the conversation subheader. Uses the server default when `nil`. Pass a single space (`" "`) to render a blank subheader. |
 
 - UIKit apps
 
@@ -544,7 +556,11 @@ DevRev.updateFeatureConfiguration(
 		supportWidgetTheme: SupportWidgetTheme(
 			prefersSystemTheme: false,
 			primaryTextColor: "#202020",
-			accentColor: "#34C759"
+			accentColor: "#34C759",
+			conversationPageOptions: ConversationPageOptions(
+				headerText: "Acme Support",
+				subheaderText: "We're here to help"
+			)
 		),
 		enableSupportChatStreaming: true
 	)

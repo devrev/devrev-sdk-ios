@@ -46,3 +46,13 @@ struct TextFieldMenuItem: MenuItem {
 struct ManuallyMaskedMenuItem: MenuItem {
 	let title: String
 }
+
+struct DropdownMenuItem: MenuItem {
+	let title: String
+	let options: [String]
+}
+
+struct SegmentedMenuItem: MenuItem {
+	let title: String
+	let segments: [String]
+}

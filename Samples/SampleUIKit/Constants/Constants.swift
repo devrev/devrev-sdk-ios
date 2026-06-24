@@ -11,6 +11,8 @@ enum Constants {
 		static let main = "MainCell"
 		static let status = "StatusCell"
 		static let textField = "TextFieldCell"
+		static let dropdown = "DropdownCell"
+		static let segment = "SegmentCell"
 		static let tableView = "TableViewCell"
 	}
 }

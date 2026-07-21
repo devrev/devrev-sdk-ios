@@ -17,6 +17,7 @@ struct SessionAnalyticsView: View {
 			sessionRecordingSection
 			mediaSection
 			heavyUIsection
+			networkTestingSection
 			timerSection
 			errorCaptureSection
 			manualMaskingSection
@@ -132,6 +133,14 @@ struct SessionAnalyticsView: View {
 			}
 			NavigationLink(destination: CryptoRealtimeView()) {
 				Text("Real Time UI")
+			}
+		}
+	}
+
+	private var networkTestingSection: some View {
+		Section(header: Text("Network Observability")) {
+			NavigationLink(destination: NetworkTestingView()) {
+				Text("Network Testing")
 			}
 		}
 	}

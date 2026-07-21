@@ -115,6 +115,7 @@ private extension SessionAnalyticsViewController {
 			createSessionRecordingSection(),
 			createMediaSection(),
 			createHeavyUISection(),
+			createNetworkTestingSection(),
 			createTimerSection(),
 			createErrorCaptureSection(),
 			createManualMaskingSection(),
@@ -209,6 +210,15 @@ private extension SessionAnalyticsViewController {
 			ActionableMenuItem(
 				title: NSLocalizedString("Real Time UI", comment: ""),
 				destination: CryptoRealTimeViewController.self
+			),
+		]
+	}
+
+	func createNetworkTestingSection() -> [MenuItem] {
+		[
+			ActionableMenuItem(
+				title: NSLocalizedString("Network Testing", comment: ""),
+				destination: NetworkTestingViewController.self
 			),
 		]
 	}
@@ -318,11 +328,11 @@ extension SessionAnalyticsViewController {
 		case 5:
 			NSLocalizedString("Heavy UI", comment: "")
 		case 6:
-			NSLocalizedString("Timer", comment: "")
+			NSLocalizedString("Network Observability", comment: "")
 		case 7:
-			NSLocalizedString("Error Capture", comment: "")
+			NSLocalizedString("Timer", comment: "")
 		case 8:
-			NSLocalizedString("Manual Masking / Unmasking", comment: "")
+			NSLocalizedString("Error Capture", comment: "")
 		case 9:
 			NSLocalizedString("Dropdown Selection", comment: "")
 		case 10:
@@ -498,11 +508,11 @@ extension SessionAnalyticsViewController {
 			handlePauseUserInteractionTracking()
 		case (3, 5):
 			handleResumeUserInteractionTracking()
-		case (6, 0):
-			handleStartTimer()
-		case (6, 1):
-			handleEndTimer()
 		case (7, 0):
+			handleStartTimer()
+		case (7, 1):
+			handleEndTimer()
+		case (8, 0):
 			handleCaptureError()
 		case (10, 0):
 			handleProcessOnDemandSessions()

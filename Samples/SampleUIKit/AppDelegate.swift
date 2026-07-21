@@ -44,7 +44,17 @@ class AppDelegate:
 			)
 		}
 		else {
-			DevRev.configure(appID: appID)
+			DevRev.configure(
+				appID: appID,
+				featureConfiguration: FeatureConfiguration(
+					networkObservability: NetworkObservabilityConfiguration(
+						enabled: true,
+						allowlist: ["*"],
+						pathRedactionPatterns: ["/users/*/profile", "/accounts/*/transactions"],
+						includeResponseBody: true
+					)
+				)
+			)
 		}
 
 		Task { @MainActor in

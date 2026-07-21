@@ -45,6 +45,9 @@ DevRev SDK, used for integrating DevRev services into your iOS app.
 			- [Timers](#timers)
 			- [Capture errors](#capture-errors)
 			- [Track screens](#track-screens)
+			- [Network observability](#network-observability)
+				- [Network observability reference](#network-observability-reference)
+				- [Remote configuration on DevRev portal (Coming soon)](#remote-configuration-on-devrev-portal-coming-soon)
 		- [Push notifications](#push-notifications)
 			- [Configuration](#configuration)
 			- [Register for push notifications](#register-for-push-notifications)
@@ -168,6 +171,7 @@ let configuration = FeatureConfiguration.default
 | `enableSupportChatStreaming` | `Bool` | `false` | When `true`, enables real-time AI agent response streaming in PLuG conversations (WebSocket streaming, optimistic UI, animated text). |
 | `supportWidgetArticleSearchFilters` | `ArticleSearchFilters?` | `nil` | Optional filters for PLuG article search (widget and CMDK). Applied automatically when the support widget is ready. |
 | `maskAllTextByDefault` | `Bool` | `false` | When `true`, every view that displays text — including labels, buttons, and SwiftUI `Text` views — is automatically masked in session recordings. When `false` (the default), only text input fields (`UITextField`, `UITextView`) are auto-masked. |
+| `networkObservability` | `NetworkObservabilitySettings?` | `nil` | Optional configuration for capturing network requests in session replays. Pass `nil` (the default) to leave network observability off. See [Network observability](#network-observability). |
 
 Use the designated initializer to override any combination of options:
 
@@ -833,6 +837,75 @@ For example:
 ```swift
 DevRev.trackScreenName("profile-screen")
 ```
+
+#### Network observability
+
+Network observability captures outgoing network requests (URL, method, status, and timing) and attaches them to session replays, helping you correlate user activity with the underlying network traffic.
+
+The feature is **off by default**. To enable it, pass a `NetworkObservabilitySettings` instance via `FeatureConfiguration.networkObservability` while configuring the SDK:
+
+```swift
+DevRev.configure(
+	appID: "abcdefg12345",
+	featureConfiguration: FeatureConfiguration(
+		networkObservability: NetworkObservabilitySettings(
+			enabled: true,
+			allowlist: ["*.myapp.com/*", "https://api.example.org/*"],
+			pathRedactionPatterns: ["users/*", "orders/*/items"],
+			includeResponseBody: false,
+			includeTimingBreakdown: true,
+			maxBodySize: 64 * 1024,
+			maxEventsPerSession: 5000,
+			customSensitiveKeys: ["org_id", "session_token"]
+		)
+	)
+)
+```
+
+> [!IMPORTANT]
+> Only requests matching the `allowlist` are captured. When the allowlist is `nil` or empty, **no requests are captured** even if `enabled` is `true`. Set the allowlist to the endpoints you want to observe.
+
+##### Network observability reference
+
+`NetworkObservabilitySettings` controls which requests are captured and how their data is sanitized before being recorded.
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `enabled` | `Bool` | `true` | Master toggle for network observability. |
+| `allowlist` | `[String]?` | `nil` | Glob patterns matched against the full URL, where `*` matches any sequence. Only matching URLs are captured; when `nil` or empty, nothing is captured. |
+| `pathRedactionPatterns` | `[String]?` | `nil` | Path patterns whose wildcard segments are replaced with `<redacted>`. `*` matches one segment, `**` matches zero or more. Prefix-based, e.g. `users/*` redacts the id in `users/42/profile`. |
+| `includeResponseBody` | `Bool` | `false` | When `true`, response bodies are captured and scrubbed. |
+| `includeTimingBreakdown` | `Bool` | `false` | When `true`, the timing breakdown (DNS, TCP, TLS, TTFB) is captured. |
+| `maxBodySize` | `Int` | `65536` (64 KB) | Maximum response body size in bytes before truncation. |
+| `maxEventsPerSession` | `Int` | `5000` | Maximum number of events captured per session. Once reached, monitoring pauses for the rest of the session. |
+| `customSensitiveKeys` | `[String]?` | `nil` | Extra keys whose values are redacted in query params, JSON bodies, headers, and form data, merged with the built-in list. Matched case-insensitively as a substring, so `"org_id"` also redacts `"sub_org_id"`. |
+
+> [!NOTE]
+> A ready-made `NetworkObservabilitySettings.default` is available: network observability enabled, but with no allowlist (so nothing is captured until you set one), no path redaction, and response bodies and timing breakdown excluded.
+
+##### Remote configuration on DevRev portal (Coming soon)
+
+Network observability can be controlled remotely from the DevRev web app, without shipping an app update. When remote configuration is fetched, it **overrides** the developer-set `NetworkObservabilitySettings` values.
+
+- Setting `enabled` to `false` remotely stops all network interception immediately.
+- Changes to the allowlist, path redaction patterns, and event caps apply immediately (hot-toggle) — no relaunch required.
+- If the settings fetch fails, the SDK falls back to the last cached configuration.
+
+> [!TIP]
+> Because remote configuration overrides local values, an admin can enable or disable network observability for all app installs from the DevRev portal even if the app was configured with `networkObservability: nil`.
+
+**Set up the remote flag in the DevRev web app:**
+
+1. Open the DevRev web app at [https://app.devrev.ai](https://app.devrev.ai) and go to the **Settings** page.
+2. Navigate to **Session Replays > iOS > General**.
+3. Locate the **Network Observability** toggle (marked with the iOS and Android platform indicators, since it applies to mobile SDKs) and switch it on or off.
+4. On selecting toggle will Expand the **Advanced** section to configure the allowlist and path redaction patterns.
+5. Save the changes. The updated configuration is delivered to the SDK on its next settings fetch (at startup and when the app enters the background).
+
+The toggle reflects the current remote state on page load, persists across reloads, and surfaces success or error feedback when saving.
+
+> [!NOTE]
+> When the fetch succeeds and no cached configuration exists yet, the SDK defaults to `enabled: true`. Only URLs matching the allowlist are ever captured, so an empty allowlist means no requests are recorded even while the feature is enabled.
 
 ### Push notifications
 

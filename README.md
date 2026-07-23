@@ -171,7 +171,7 @@ let configuration = FeatureConfiguration.default
 | `enableSupportChatStreaming` | `Bool` | `false` | When `true`, enables real-time AI agent response streaming in PLuG conversations (WebSocket streaming, optimistic UI, animated text). |
 | `supportWidgetArticleSearchFilters` | `ArticleSearchFilters?` | `nil` | Optional filters for PLuG article search (widget and CMDK). Applied automatically when the support widget is ready. |
 | `maskAllTextByDefault` | `Bool` | `false` | When `true`, every view that displays text — including labels, buttons, and SwiftUI `Text` views — is automatically masked in session recordings. When `false` (the default), only text input fields (`UITextField`, `UITextView`) are auto-masked. |
-| `networkObservability` | `NetworkObservabilitySettings?` | `nil` | Optional configuration for capturing network requests in session replays. Pass `nil` (the default) to leave network observability off. See [Network observability](#network-observability). |
+| `networkObservability` | `NetworkObservabilityConfiguration?` | `nil` | Optional configuration for capturing network requests in session replays. Pass `nil` (the default) to leave network observability off. See [Network observability](#network-observability). |
 
 Use the designated initializer to override any combination of options:
 
@@ -842,13 +842,13 @@ DevRev.trackScreenName("profile-screen")
 
 Network observability captures outgoing network requests (URL, method, status, and timing) and attaches them to session replays, helping you correlate user activity with the underlying network traffic.
 
-The feature is **off by default**. To enable it, pass a `NetworkObservabilitySettings` instance via `FeatureConfiguration.networkObservability` while configuring the SDK:
+The feature is **off by default**. To enable it, pass a `NetworkObservabilityConfiguration` instance via `FeatureConfiguration.networkObservability` while configuring the SDK:
 
 ```swift
 DevRev.configure(
 	appID: "abcdefg12345",
 	featureConfiguration: FeatureConfiguration(
-		networkObservability: NetworkObservabilitySettings(
+		networkObservability: NetworkObservabilityConfiguration(
 			enabled: true,
 			allowlist: ["*.myapp.com/*", "https://api.example.org/*"],
 			pathRedactionPatterns: ["users/*", "orders/*/items"],
@@ -867,7 +867,7 @@ DevRev.configure(
 
 ##### Network observability reference
 
-`NetworkObservabilitySettings` controls which requests are captured and how their data is sanitized before being recorded.
+`NetworkObservabilityConfiguration` controls which requests are captured and how their data is sanitized before being recorded.
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -881,11 +881,11 @@ DevRev.configure(
 | `customSensitiveKeys` | `[String]?` | `nil` | Extra keys whose values are redacted in query params, JSON bodies, headers, and form data, merged with the built-in list. Matched case-insensitively as a substring, so `"org_id"` also redacts `"sub_org_id"`. |
 
 > [!NOTE]
-> A ready-made `NetworkObservabilitySettings.default` is available: network observability enabled, but with no allowlist (so nothing is captured until you set one), no path redaction, and response bodies and timing breakdown excluded.
+> A ready-made `NetworkObservabilityConfiguration.default` is available: network observability enabled, but with no allowlist (so nothing is captured until you set one), no path redaction, and response bodies and timing breakdown excluded.
 
 ##### Remote configuration on DevRev portal (Coming soon)
 
-Network observability can be controlled remotely from the DevRev web app, without shipping an app update. When remote configuration is fetched, it **overrides** the developer-set `NetworkObservabilitySettings` values.
+Network observability can be controlled remotely from the DevRev web app, without shipping an app update. When remote configuration is fetched, it **overrides** the developer-set `NetworkObservabilityConfiguration` values.
 
 - Setting `enabled` to `false` remotely stops all network interception immediately.
 - Changes to the allowlist, path redaction patterns, and event caps apply immediately (hot-toggle) — no relaunch required.

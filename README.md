@@ -626,7 +626,7 @@ To filter only one surface, pass a filter for that surface only (e.g. `ArticleSe
 
 ### Analytics
 
-The DevRev SDK allows you to send custom analytic events by using a name and a string dictionary. You can track these events using the following function:
+The DevRev SDK allows you to record custom analytic events by using a name and a string dictionary. You can track these events using the following function:
 
 ```swift
 DevRev.trackEvent(name:properties:)
@@ -637,6 +637,9 @@ For example:
 ```swift
 await DevRev.trackEvent(name: "open-message-screen", properties: ["id": "message-1337"])
 ```
+
+> [!NOTE]
+> Custom events are captured as part of session replay. Event names must be non-empty and at most 250 characters; calls that violate this are ignored.
 
 ### Session analytics
 

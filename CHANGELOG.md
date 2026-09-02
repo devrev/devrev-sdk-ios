@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.4] - 2026-09-02
+
+### Added
+- Optional token refresh handler for verified user identification to renew expired session tokens without re-identifying the user.
+
+### Changed
+- Session replay recording now respects the server-provided admission gate, skipping capture when the session is rate-limited.
+
+### Fixed
+- Fixed a use-after-free crash when a network-intercepted URLSession completion handler fired.
+
 ## [3.0.3] - 2026-08-13
 
 ### Changed

@@ -51,15 +51,15 @@ class SessionAnalyticsViewController: UITableViewController {
 		IndexPath(row: 1, section: 3): TestConstants.AccessibilityID.SessionAnalytics.stopRecordingButton,
 		IndexPath(row: 2, section: 3): TestConstants.AccessibilityID.SessionAnalytics.pauseRecordingButton,
 		IndexPath(row: 3, section: 3): TestConstants.AccessibilityID.SessionAnalytics.resumeRecordingButton,
-		IndexPath(row: 0, section: 6): TestConstants.AccessibilityID.SessionAnalytics.startTimerButton,
-		IndexPath(row: 1, section: 6): TestConstants.AccessibilityID.SessionAnalytics.stopTimerButton,
-		IndexPath(row: 0, section: 8): TestConstants.AccessibilityID.SessionAnalytics.maskedLabel,
-		IndexPath(row: 1, section: 8): TestConstants.AccessibilityID.SessionAnalytics.unmaskedTextField,
-		IndexPath(row: 0, section: 9): TestConstants.AccessibilityID.SessionAnalytics.eventTypeDropdown,
-		IndexPath(row: 1, section: 9): TestConstants.AccessibilityID.SessionAnalytics.prioritySegment,
-		IndexPath(row: 0, section: 10): TestConstants.AccessibilityID.SessionAnalytics.processSessionsButton,
-		IndexPath(row: 0, section: 11): TestConstants.AccessibilityID.SessionAnalytics.openWebViewButton,
-		IndexPath(row: 0, section: 12): TestConstants.AccessibilityID.SessionAnalytics.openLargeListLink,
+		IndexPath(row: 0, section: 7): TestConstants.AccessibilityID.SessionAnalytics.startTimerButton,
+		IndexPath(row: 1, section: 7): TestConstants.AccessibilityID.SessionAnalytics.stopTimerButton,
+		IndexPath(row: 0, section: 9): TestConstants.AccessibilityID.SessionAnalytics.maskedLabel,
+		IndexPath(row: 1, section: 9): TestConstants.AccessibilityID.SessionAnalytics.unmaskedTextField,
+		IndexPath(row: 0, section: 10): TestConstants.AccessibilityID.SessionAnalytics.eventTypeDropdown,
+		IndexPath(row: 1, section: 10): TestConstants.AccessibilityID.SessionAnalytics.prioritySegment,
+		IndexPath(row: 0, section: 11): TestConstants.AccessibilityID.SessionAnalytics.processSessionsButton,
+		IndexPath(row: 0, section: 12): TestConstants.AccessibilityID.SessionAnalytics.openWebViewButton,
+		IndexPath(row: 0, section: 13): TestConstants.AccessibilityID.SessionAnalytics.openLargeListLink,
 	]
 
 	override func viewDidLoad() {
@@ -334,12 +334,14 @@ extension SessionAnalyticsViewController {
 		case 8:
 			NSLocalizedString("Error Capture", comment: "")
 		case 9:
-			NSLocalizedString("Dropdown Selection", comment: "")
+			NSLocalizedString("Manual Masking", comment: "")
 		case 10:
-			NSLocalizedString("On-demand Sessions", comment: "")
+			NSLocalizedString("Dropdown Selection", comment: "")
 		case 11:
-			NSLocalizedString("Web View", comment: "")
+			NSLocalizedString("On-demand Sessions", comment: "")
 		case 12:
+			NSLocalizedString("Web View", comment: "")
+		case 13:
 			NSLocalizedString("Large Scrollable Table", comment: "")
 		default:
 			nil
@@ -514,7 +516,7 @@ extension SessionAnalyticsViewController {
 			handleEndTimer()
 		case (8, 0):
 			handleCaptureError()
-		case (10, 0):
+		case (11, 0):
 			handleProcessOnDemandSessions()
 		default:
 			break

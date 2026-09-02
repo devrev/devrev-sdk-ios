@@ -333,6 +333,36 @@ Pass the user identifier and the exchanged session token to the verified identif
 DevRev.identifyVerifiedUser(_:sessionToken:)
 ```
 
+Session tokens expire. To keep a verified user identified without re-identifying them, use the overload that accepts a token refresh handler. The SDK invokes the handler when the session token is about to expire and uses the returned token to continue making authenticated calls on the user's behalf. The handler should return a fresh session token using the same mechanism that produced the initial `sessionToken` (i.e. exchanging your AAT on your backend):
+
+```swift
+await DevRev.identifyVerifiedUser(
+    "foo@example.org",
+    sessionToken: "bar-1337",
+    tokenRefreshHandler: {
+        // Fetch and return a fresh session token from your backend.
+        try await yourBackend.fetchDevRevSessionToken()
+    }
+)
+```
+
+> [!TIP]
+> The handler runs off the SDK's internal queue and is bounded by a timeout, so a slow or failing refresh does not block other SDK operations. The refresh is single-flight: concurrent triggers await the same in-flight refresh and your handler is invoked at most once per refresh.
+
+> [!NOTE]
+> Passing `nil` for `tokenRefreshHandler` matches `DevRev.identifyVerifiedUser(_:sessionToken:)`: an expired session token is not refreshed and authenticated calls will start failing once it expires.
+
+From Objective-C, use the completion-handler variant. Call the completion with a fresh session token, or with `nil` when a new token could not be produced:
+
+```objc
+[DevRev identifyVerifiedUser:@"foo@example.org"
+                sessionToken:@"bar-1337"
+         tokenRefreshHandler:^(void (^completion)(NSString * _Nullable)) {
+    // Fetch a fresh session token from your backend, then:
+    completion(freshSessionToken); // or completion(nil) if none could be produced.
+}];
+```
+
 #### Update the user
 
 You can update the user's information using the following method:

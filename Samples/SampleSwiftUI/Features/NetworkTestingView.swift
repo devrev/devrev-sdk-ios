@@ -37,7 +37,7 @@ struct NetworkTestingView: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing) {
 				AsyncImage(url: URL(string: "https://httpbin.org/image/png")) { image in
-					image.resizable().aspectRatio(contentMode: .fit)
+					image.resizable().scaledToFit()
 				} placeholder: {
 					ProgressView()
 				}

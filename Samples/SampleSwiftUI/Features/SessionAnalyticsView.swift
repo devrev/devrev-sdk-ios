@@ -27,10 +27,14 @@ struct SessionAnalyticsView: View {
 		}
 		.navigationTitle(title)
 		.navigationBarItems(trailing: RefreshButton(action: updateStatuses))
+		.onAppear {
+			DevRev.trackScreenName("SessionAnalyticsView")
+		}
 		.refreshable {
 			await updateStatuses()
 		}
 		.task {
+			DevRev.addSessionProperties(["test_user_id": "test_001"])
 			await updateStatuses()
 		}
 	}
@@ -201,10 +205,10 @@ struct SessionAnalyticsView: View {
 			AsyncButton(text: "Open Web View") {
 				isWebViewPresented = true
 			}
+			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.openWebViewButton)
 			.sheet(isPresented: $isWebViewPresented) {
 				MaskedWebView()
 			}
-			.accessibilityIdentifier(TestConstants.AccessibilityID.SessionAnalytics.openWebViewButton)
 		}
 	}
 

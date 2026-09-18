@@ -79,6 +79,9 @@ struct IdentificationView: View {
 		}
 		.navigationTitle(title)
 		.navigationBarItems(trailing: RefreshButton(action: updateStatuses))
+		.onAppear {
+			DevRev.trackScreenName("IdentificationView")
+		}
 		.refreshable {
 			await updateStatuses()
 		}

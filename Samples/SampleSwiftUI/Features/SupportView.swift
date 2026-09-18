@@ -30,10 +30,10 @@ struct SupportView: View {
 					await updateStatuses()
 				}
 				.disabled(!isUserIdentified)
+				.accessibilityIdentifier(TestConstants.AccessibilityID.Support.showSupportButton)
 				.sheet(isPresented: $isSupportVisible) {
 					DevRev.supportView.ignoresSafeArea()
 				}
-				.accessibilityIdentifier(TestConstants.AccessibilityID.Support.showSupportButton)
 			}
 		}
 		.navigationTitle(title)

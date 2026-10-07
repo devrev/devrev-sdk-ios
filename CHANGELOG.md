@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.7] - 2026-10-05
+
+### Added
+- Session Replay now pauses capture while SwiftUI animations are in progress.
+- Session Replay now masks SwiftUI text that is drawn into layers.
+
+### Changed
+- The Session Replay capture mode is now set by remote settings and stays the same for the whole session.
+
+### Fixed
+- Fixed a crash when flushing log entries from the log buffer.
+- Fixed wireframe capture issues: wrong colors on translucent views, collisions in the image cache, lost tint colors on template and SF Symbol images, unknown controls treated as input fields, and the wrong viewport width for web views.
+
 ## [3.0.6] - 2026-09-17
 
 ### Added

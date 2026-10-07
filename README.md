@@ -669,7 +669,7 @@ await DevRev.trackEvent(name: "open-message-screen", properties: ["id": "message
 ```
 
 > [!NOTE]
-> Custom events are captured as part of session replay. Event names must be non-empty and at most 250 characters; calls that violate this are ignored.
+> Custom events are captured as part of session replay. Event names must be non-empty, at most 250 characters, and match the regular expression `^[a-zA-Z0-9_-]+$` — use only letters, digits, underscores, and hyphens. Calls that violate this are ignored. Keep event names and properties small: large payloads bloat the device's local memory and can lead to missed recordings.
 
 ### Session analytics
 
